@@ -8,26 +8,35 @@ require 'parser/state_base'
 module TermParser
   extend ParserBase
 
-  def self.start_state_class
-    State
+  def self.start_state
+    Start.new([])
   end
-  private_class_method :start_state_class
+  private_class_method :start_state
 
-  class State < StateBase
+  class Start < StateBase
     def next_state(input)
-      case [name, input, top]
-      when [:start, '(', nil]
-        State.new(:refused, [])
-      when [:start, input, nil]
-        State.new(:term, stack)
-      when [:term, '(', nil]
-        ParenthesesParser::State.new(:semi_balance, [input] + stack)
-      when [:term, ' ', nil]
-        State.new(:accepted, stack)
-      when [:term, input, nil]
-        State.new(:term, stack)
+      case [input, top]
+      when ['(', nil]
+        StateBase::Refuse.new([])
+      when [input, nil]
+        Term.new(stack)
       else
-        State.new(:refused, [])
+        StateBase::Refuse.new([])
+      end
+    end
+  end
+
+  class Term < StateBase
+    def next_state(input)
+      case [input, top]
+      when ['(', nil]
+        ParenthesesParser::SemiBalance.new([input] + stack)
+      when [' ', nil]
+        StateBase::Accepted.new(stack)
+      when [input, nil]
+        Term.new(stack)
+      else
+        StateBase::Refuse.new([])
       end
     end
   end

@@ -20,34 +20,41 @@ module ParenthesesParser
       data.sub(/^./, '').sub(/.$/, '')
     end
 
-    def start_state_class
-      State
+    def start_state
+      Start.new([])
     end
   end
 
-  class State < StateBase
+  class Start < StateBase
     def next_state(input)
-      case [name, input, stack.first]
-      when [:start, '(', nil]
-        State.new(:semi_balance, [input] + stack)
-      when [:start, input, nil]
-        State.new(:refused, [])
-      when [:semi_balance, ')', '(']
-        State.new(:semi_balance, stack.drop(1))
-      when [:semi_balance, ')', ')']
-        State.new(:semi_balance, [input] + stack)
-      when [:semi_balance, '(', '(']
-        State.new(:semi_balance, [input] + stack)
-      when [:semi_balance, '(', ')']
-        State.new(:refused, [])
-      when [:semi_balance, ')', nil]
-        State.new(:refused, [])
-      when [:semi_balance, input, nil]
-        State.new(:accepted, [])
-      when [:semi_balance, input, stack.first]
-        State.new(:semi_balance, stack)
+      case [input, top]
+      when ['(', nil]
+        SemiBalance.new([input] + stack)
+      when [input, nil]
+        StateBase::Refused.new([])
       else
-        State.new(:refused, [])
+        StateBase::Refused.new([])
+      end
+    end
+  end
+
+  class SemiBalance < StateBase
+    def next_state(input)
+      case [input, top]
+      when [')', '(']
+        SemiBalance.new(stack.drop(1))
+      when [')', ')']
+        SemiBalance.new([input] + stack)
+      when ['(', '(']
+        SemiBalance.new([input] + stack)
+      when ['(', ')']
+        StateBase::Refused.new([])
+      when [')', nil]
+        StateBase::Refused.new([])
+      when [input, nil]
+        StateBase::Accepted.new([])
+      when [input, stack.first]
+        SemiBalance.new(stack)
       end
     end
   end

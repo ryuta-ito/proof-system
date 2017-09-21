@@ -1,12 +1,7 @@
 class StateBase
-  attr_accessor :name, :stack
+  attr_accessor :stack
 
-  def self.start_state
-    new(:start, [])
-  end
-
-  def initialize(name, stack)
-    @name = name
+  def initialize(stack)
     @stack = stack
   end
 
@@ -17,4 +12,7 @@ class StateBase
   def top
     stack.first
   end
+
+  class Refused < StateBase; end
+  class Accepted < StateBase; end
 end
