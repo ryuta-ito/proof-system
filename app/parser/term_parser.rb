@@ -9,7 +9,7 @@ module TermParser
   extend ParserBase
 
   def self.start_state
-    Start.new([])
+    Start.new
   end
   private_class_method :start_state
 
@@ -17,11 +17,11 @@ module TermParser
     def next_state(input)
       case [input, top]
       when ['(', nil]
-        StateBase::Refuse.new([])
+        StateBase::Refuse.new
       when [input, nil]
         Term.new(stack)
       else
-        StateBase::Refuse.new([])
+        StateBase::Refuse.new
       end
     end
   end
@@ -36,7 +36,7 @@ module TermParser
       when [input, nil]
         Term.new(stack)
       else
-        StateBase::Refuse.new([])
+        StateBase::Refuse.new
       end
     end
   end

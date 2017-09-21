@@ -21,7 +21,7 @@ module ParenthesesParser
     end
 
     def start_state
-      Start.new([])
+      Start.new
     end
   end
 
@@ -31,9 +31,9 @@ module ParenthesesParser
       when ['(', nil]
         SemiBalance.new([input] + stack)
       when [input, nil]
-        StateBase::Refused.new([])
+        StateBase::Refused.new
       else
-        StateBase::Refused.new([])
+        StateBase::Refused.new
       end
     end
   end
@@ -46,9 +46,9 @@ module ParenthesesParser
       when [')', ')'], ['(', '(']
         SemiBalance.new([input] + stack)
       when ['(', ')'], [')', nil]
-        StateBase::Refused.new([])
+        StateBase::Refused.new
       when [input, nil]
-        StateBase::Accepted.new([])
+        StateBase::Accepted.new
       when [input, stack.first]
         SemiBalance.new(stack)
       end

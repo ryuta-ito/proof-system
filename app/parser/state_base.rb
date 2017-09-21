@@ -1,7 +1,7 @@
 class StateBase
   attr_accessor :stack
 
-  def initialize(stack)
+  def initialize(stack = [])
     @stack = stack
   end
 
