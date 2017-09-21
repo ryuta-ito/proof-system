@@ -43,13 +43,9 @@ module ParenthesesParser
       case [input, top]
       when [')', '(']
         SemiBalance.new(stack.drop(1))
-      when [')', ')']
+      when [')', ')'], ['(', '(']
         SemiBalance.new([input] + stack)
-      when ['(', '(']
-        SemiBalance.new([input] + stack)
-      when ['(', ')']
-        StateBase::Refused.new([])
-      when [')', nil]
+      when ['(', ')'], [')', nil]
         StateBase::Refused.new([])
       when [input, nil]
         StateBase::Accepted.new([])
