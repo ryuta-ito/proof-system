@@ -36,7 +36,7 @@ module TermParser
       when ['(', nil]
         ParenthesesParser::SemiBalance.new([input] + stack)
       when [' ', nil]
-        StateBase::Accepted.new(stack)
+        StateBase::Accepted.new
       when *refused_match
         StateBase::Refused.new
       when [input, nil]
