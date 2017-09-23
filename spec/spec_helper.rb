@@ -15,7 +15,11 @@
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 
 require 'simplecov'
-SimpleCov.start
+SimpleCov.start do
+  add_group 'Models', 'app/models'
+  add_group 'Parsers', 'app/parsers'
+  add_group 'Rules', 'app/rules'
+end
 
 require_relative '../config/nd_proving.rb'
 
