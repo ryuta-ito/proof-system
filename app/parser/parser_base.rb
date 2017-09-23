@@ -1,30 +1,30 @@
 module ParserBase
-  def split(terms_data)
-    run_split(terms_data, [])
+  def split(data)
+    run_split(data, [])
   end
 
-  def divide(terms_data)
-    run_divide(start_state, [], terms_data.split(''))
+  def divide(data)
+    run_divide(start_state, [], data.strip.split(''))
   end
 
   private
 
   def start_state
-    raise NotImplementedError, 'please implement #start_state_class private class method returns a start state instance'
+    raise NotImplementedError, 'please implement #start_state private class method returns a start state instance'
   end
 
-  def run_split(terms_data, splited_terms_data)
-    term_data, remain_data, result = divide(terms_data)
-    return splited_terms_data << term_data if remain_data.empty?
-    return splited_terms_data + [term_data, remain_data] if term_data.empty?
+  def run_split(data, splited_data)
+    term_data, remain_data, result = split_divide(data)
+    return splited_data << term_data if remain_data.empty?
+    return splited_data + [term_data, remain_data] if term_data.empty?
 
     case result
     when :accepted
-      run_split(remain_data, splited_terms_data << term_data)
+      run_split(remain_data, splited_data << term_data)
     when :refused
-      splited_terms_data + [terms_data, remain_data]
+      splited_data + [data, remain_data]
     else
-      raise 'HOORAY. you fail parsing term.'
+      raise 'HOORAY. you fail parsing...'
     end
   end
 
