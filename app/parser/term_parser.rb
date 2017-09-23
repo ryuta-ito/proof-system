@@ -16,13 +16,17 @@ module TermParser
   class Start < StateBase
     def next_state(input)
       case [input, top]
-      when ['(', nil]
-        StateBase::Refuse.new
+      when *refused_match
+        StateBase::Refused.new
       when [input, nil]
         Term.new(stack)
       else
-        StateBase::Refuse.new
+        StateBase::Refused.new
       end
+    end
+
+    def refused_match
+      Formula.operation_chars.map { |char| [char, nil] } << ['(', nil]
     end
   end
 
@@ -33,11 +37,17 @@ module TermParser
         ParenthesesParser::SemiBalance.new([input] + stack)
       when [' ', nil]
         StateBase::Accepted.new(stack)
+      when *refused_match
+        StateBase::Refused.new
       when [input, nil]
         Term.new(stack)
       else
-        StateBase::Refuse.new
+        StateBase::Refused.new
       end
+    end
+
+    def refused_match
+      Formula.operation_chars.map { |char| [char, nil] } << ['(', nil]
     end
   end
 end
