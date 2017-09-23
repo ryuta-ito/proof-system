@@ -14,6 +14,9 @@
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 
+require 'simplecov'
+SimpleCov.start
+
 require_relative '../config/nd_proving.rb'
 
 RSpec.configure do |config|

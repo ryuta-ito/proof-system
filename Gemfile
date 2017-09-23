@@ -1,4 +1,8 @@
-source "https://rubygems.org"
+source 'https://rubygems.org'
 
-gem "rspec", '~> 3'
-gem "pry"
+gem 'pry'
+
+group :test do
+  gem 'rspec', '~> 3'
+  gem 'simplecov'
+end
