@@ -1,5 +1,5 @@
 # formula:
-#   <atom> | <imply> | <conjunction> | <disjunction> | <existence>
+#   <atom> | <imply> | <conjunction> | <disjunction> | <existence> | (<formula>)
 
 class Formula
   class << self
