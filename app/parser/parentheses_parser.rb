@@ -5,8 +5,7 @@ module ParenthesesParser
   extend ParserBase
 
   class << self
-    def strip_edge_parentheses(_data)
-      data = _data.strip
+    def strip_edge_parentheses(data)
       if [data, "", :accepted] == divide(data)
         strip_edge_parentheses(strip_edge(data))
       else
