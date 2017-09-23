@@ -28,6 +28,7 @@ module ParserBase
 
   def run_split(data, splited_data)
     term_data, remain_data, result = split_divide(data)
+    return splited_data << remain_data if result == :refused
     return splited_data << term_data if remain_data.empty?
     return splited_data + [term_data, remain_data] if term_data.empty?
 
