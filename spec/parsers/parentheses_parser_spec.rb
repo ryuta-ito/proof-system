@@ -3,7 +3,7 @@ describe ParenthesesParser do
     subject { ParenthesesParser.strip_edge_parentheses(data) }
 
     context 'success' do
-      let(:data) { '(asdf)'}
+      let(:data) { '(((((((asdf)))))))'}
       it { is_expected.to eq('asdf') }
     end
 
