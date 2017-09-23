@@ -1,8 +1,8 @@
 # (A => B) ∨ C ∧ B =divide=> ['A => B', '∨ C ∧ B']
 # (A => B) ∨ C ∧ B =split=> ['A => B', '∨', 'C', '∧', 'B']
 
-require 'parser/parser_base'
-require 'parser/state_base'
+require 'parsers/parser_base'
+require 'parsers/state_base'
 
 module FormulaParser
   extend ParserBase

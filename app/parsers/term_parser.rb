@@ -2,8 +2,8 @@
 # "c t_1 t_3" =split=> ["c", "t_1", "t_2"]
 # "f(t_1 ... t_n) t'_1 t'_2" =split=> ["f(t_1 ... t_n)", "t'_1", "t'_2"]
 
-require 'parser/parser_base'
-require 'parser/state_base'
+require 'parsers/parser_base'
+require 'parsers/state_base'
 
 module TermParser
   extend ParserBase
