@@ -25,6 +25,23 @@ class Formula
       end
     end
 
+    def operation
+      {
+        imply: '=>',
+        disjunction: '∨',
+        conjunction: '∧',
+        existence: '∃'
+      }
+    end
+
+    def operation_reg_exp
+      %r{^(?<operation>#{operation.values.join('|')})}
+    end
+
+    def operation_chars
+      operation.merge({imply: '='}).values
+    end
+
     private
 
     def parse_formulas(formulas_data)
