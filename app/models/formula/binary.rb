@@ -16,7 +16,7 @@ class Formula::Binary < Formula
   end
 
   def str
-    "(#{left.str} #{Formula::Binary.code} #{right.str})"
+    "(#{left.str} #{self.code} #{right.str})"
   end
 
   def identify?(formula)
