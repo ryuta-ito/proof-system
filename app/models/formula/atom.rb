@@ -7,9 +7,9 @@ class Atom < Formula
   class << self
     def build(atom_data)
       case atom_data
-      when /^∃/
+      when %r{^#{Existence.code}}
         Existence.build(atom_data)
-      when /^∀/
+      when %r{^#{Universal.code}}
         Universal.build(atom_data)
       else
         build_atom(atom_data)

@@ -27,9 +27,9 @@ class Formula
 
     def operation
       {
-        imply: '=>',
-        disjunction: '∨',
-        conjunction: '∧'
+        imply: Imply.code,
+        disjunction: Disjunction.code,
+        conjunction: Conjunction.code
       }
     end
 

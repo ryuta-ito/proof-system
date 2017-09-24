@@ -1,10 +1,6 @@
-describe Imply do
-  describe '#build' do
-    subject { Imply.build(left_data, right_data) }
-  end
-
+describe Disjunction do
   describe '#free_variables' do
-    subject { Imply.build(left_data, right_data).free_variables }
+    subject { Disjunction.build(left_data, right_data).free_variables }
     let(:left_data) { 'P(x y X)' }
     let(:right_data) { 'Q(Z)' }
 
