@@ -12,4 +12,8 @@ class Variable < Term
   def identify?(variable)
     self.class === variable ? variable.str == str : false
   end
+
+  def free_variables
+    self
+  end
 end

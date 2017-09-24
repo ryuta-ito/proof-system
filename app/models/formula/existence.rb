@@ -7,7 +7,7 @@ class Existence < Formula
   class << self
     def build(existence_data)
       new.tap do |existence|
-        existence.bounded_variable = parse_existence(existence_data)[0]
+        existence.bounded_variable = Variable.build(parse_existence(existence_data)[0])
         existence.formula = Formula.build(parse_existence(existence_data)[1])
       end
     end
@@ -19,5 +19,9 @@ class Existence < Formula
         data.strip
       end
     end
+  end
+
+  def free_variables
+    formula.free_variables.select { |free_variable| !free_variable.identify?(bounded_variable) }
   end
 end

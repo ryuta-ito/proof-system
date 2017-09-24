@@ -12,4 +12,8 @@ class Constant < Term
   def identify?(constant)
     self.class === constant ? constant.str == str : false
   end
+
+  def free_variables
+    []
+  end
 end

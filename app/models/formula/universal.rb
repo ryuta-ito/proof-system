@@ -20,4 +20,8 @@ class Universal < Formula
       end
     end
   end
+
+  def free_variables
+    formula.free_variables.select { |free_variable| !free_variable.identify?(bounded_variable) }
+  end
 end

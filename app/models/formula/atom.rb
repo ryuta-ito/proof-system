@@ -61,4 +61,8 @@ class Atom < Formula
         end
     end
   end
+
+  def free_variables
+    arguments.flat_map { |term| term.free_variables }
+  end
 end
