@@ -14,6 +14,6 @@ class Variable < Term
   end
 
   def free_variables
-    self
+    [self]
   end
 end
