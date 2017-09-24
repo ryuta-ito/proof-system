@@ -59,19 +59,5 @@ class Formula
         formula_data.strip
       end
     end
-
-    def unary_class(formula_data)
-      chars = formula_data.split('')
-      [
-        [chars.index('∃'), Existence],
-        [chars.index('∀'), Existence],
-        [chars.index('¬'), Existence]
-      ].select do |index, _|
-        index != nil
-      end.min
-    end
-  end
-
-  def free_variables
   end
 end
