@@ -3,6 +3,7 @@ describe Function do
   let(:variable_y) { build(:variable, str: 'y') }
   let(:constant_C) { build(:constant, str: 'C') }
   let(:function) { build(:function, arguments: arguments) }
+  let(:arguments) { [variable_x, variable_y, constant_C] }
 
   describe '#free_variables' do
     subject { function.free_variables }
@@ -18,8 +19,21 @@ describe Function do
     end
 
     context 'mix' do
-      let(:arguments) { [variable_x, variable_y, constant_C] }
       it { is_expected.to identify_array([variable_x, variable_y]) }
+    end
+  end
+
+  describe '#idenfity?' do
+    subject { function.identify?(function_a) }
+
+    context 'opponent is function instance' do
+      let(:function_a) { function }
+      it { is_expected.to be true }
+    end
+
+    context 'opponent is not function instance' do
+      let(:function_a) { Atom.build('A') }
+      it { is_expected.to be false }
     end
   end
 end
