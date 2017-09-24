@@ -7,3 +7,7 @@ group :test do
   gem 'simplecov', require: false
   gem 'rubocop', require: false
 end
+
+group :development, :test do
+  gem 'factory_girl'
+end

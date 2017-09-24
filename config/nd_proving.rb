@@ -12,6 +12,10 @@ end
 
 class NdProving
   class << self
+    def root(path = '')
+      File.join(ND_PROVING_ROOT, path)
+    end
+
     def file_base
       File.join ND_PROVING_ROOT, config['file_base']
     end

@@ -21,6 +21,7 @@ SimpleCov.start do
   add_group 'Rules', 'app/rules'
 end
 
+require 'factory_girl'
 require_relative '../config/nd_proving.rb'
 
 RSpec.configure do |config|
@@ -108,3 +109,5 @@ RSpec.configure do |config|
   Kernel.srand config.seed
 =end
 end
+
+Dir[NdProving.root('spec/support/**/*.rb')].each { |f| require f }
