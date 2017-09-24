@@ -6,6 +6,19 @@ class Atom < Formula
 
   class << self
     def build(atom_data)
+      case atom_data
+      when /^∃/
+        Existence.build(atom_data)
+      when /^∀/
+        Universal.build(atom_data)
+      else
+        build_atom(atom_data)
+      end
+    end
+
+    private
+
+    def build_atom(atom_data)
       new.tap do |atom|
         atom.str = atom_data
         atom.predicate_name = parse_predicate_name(atom_data)
@@ -14,8 +27,6 @@ class Atom < Formula
         end
       end
     end
-
-    private
 
     def parse_predicate_name(atom_data)
       predicate?(atom_data) ? atom_data.split('(').first.strip : ''

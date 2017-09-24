@@ -5,18 +5,12 @@ class Imply < Formula
   attr_accessor :left, :right
 
   class << self
-    def build(imply_data)
+    def build(left_data, right_data)
       new.tap do |imply|
-        imply.left, imply.right = parse_imply(imply_data).map do |left_or_right_data|
+        imply.left, imply.right = [left_data, right_data].map do |left_or_right_data|
           super left_or_right_data
         end
       end
-    end
-
-    private
-
-    def parse_imply(imply_data)
-      imply_data.split('=>', 2).map {|left_or_right| left_or_right.strip}
     end
   end
 

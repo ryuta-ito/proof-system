@@ -10,18 +10,18 @@ class Formula
     end
 
     def build(formula_data)
-      # priority order
-      case formula_data
-      when %r{=>}
-        Imply.build(formula_data)
-      when %r{∨}
-        Disjunction.build(formula_data)
-      when %r{∧}
-        Conjunction.build(formula_data)
-      when %r{∃|∀|¬}
-        unary_class(formula_data).build(formula_data)
+      left_data, right_data, operation_code = FormulaParser.divide_most_low_priority_operation(formula_data)
+      case operation_code
+      when :imply
+        Imply.build(left_data, right_data)
+      when :disjunction
+        Disjunction.build(left_data, right_data)
+      when :conjunction
+        Conjunction.build(left_data, right_data)
+      when :atom
+        Atom.build(left_data)
       else
-        Atom.build(formula_data)
+        raise "#{operation_code} ??????"
       end
     end
 
@@ -29,9 +29,19 @@ class Formula
       {
         imply: '=>',
         disjunction: '∨',
-        conjunction: '∧',
-        existence: '∃'
+        conjunction: '∧'
       }
+    end
+
+    def priority
+      operation.each.with_index.with_object({}) do |((name, _), index), priority_hash|
+        priority_hash[name] = index
+      end
+    end
+
+    def priority_by_data(op_data)
+      operation_key = Formula.operation.invert[op_data]
+      Formula.priority[operation_key]
     end
 
     def operation_reg_exp
