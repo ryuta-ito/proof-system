@@ -3,9 +3,9 @@ class Formula::Quantifier < Formula
 
   class << self
     def build(quantifier_data)
-      new.tap do |qantifier|
-        qantifier.bounded_variable = Variable.build(parse_qantifier(qantifier_data)[0])
-        qantifier.formula = Formula.build(parse_qantifier(qantifier_data)[1])
+      new.tap do |quantifier|
+        quantifier.bounded_variable = Variable.build(parse_quantifier(quantifier_data)[0])
+        quantifier.formula = Formula.build(parse_quantifier(quantifier_data)[1])
       end
     end
 
@@ -15,8 +15,8 @@ class Formula::Quantifier < Formula
 
     private
 
-    def parse_qantifier(qantifier_data)
-      qantifier_data.split(/#{code}|\./).drop(1).map do |data|
+    def parse_quantifier(quantifier_data)
+      quantifier_data.split(/#{code}|\./).drop(1).map do |data|
         data.strip
       end
     end
