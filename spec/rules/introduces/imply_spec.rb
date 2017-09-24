@@ -5,24 +5,24 @@ describe Rules::Introduces::Imply do
 
     context 'valid' do
       let(:deduction_data) do
-        """
+        '''
           {A, B} |- B
           ------ (=> I)
           {B} |- A => B
-        """
+        '''
       end
-      it { is_expected.to be true}
+      it { is_expected.to be true }
     end
 
     context 'invalid' do
       let(:deduction_data) do
-        """
+        '''
           {A, B} |- B
           ------ (=> I)
           {B} |- A => A
-        """
+        '''
       end
-      it { is_expected.to be false}
+      it { is_expected.to be false }
     end
   end
 end

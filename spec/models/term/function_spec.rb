@@ -1,7 +1,5 @@
 describe Function do
-  let(:variable_x) { build(:variable, str: 'x') }
-  let(:variable_y) { build(:variable, str: 'y') }
-  let(:constant_C) { build(:constant, str: 'C') }
+  include_context 'default lets'
   let(:function) { build(:function, arguments: arguments) }
   let(:arguments) { [variable_x, variable_y, constant_C] }
 
@@ -34,6 +32,17 @@ describe Function do
     context 'opponent is not function instance' do
       let(:function_a) { Atom.build('A') }
       it { is_expected.to be false }
+    end
+  end
+
+  describe '#substitute' do
+    subject { function.substitute(target, replace) }
+
+    context 'f(x)[A/x]' do
+      let(:arguments) { [variable_x] }
+      let(:target) { variable_x }
+      let(:replace) { constant_A }
+      it { is_expected.to identify(Function.build 'f(A)') }
     end
   end
 end

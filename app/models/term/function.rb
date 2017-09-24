@@ -29,6 +29,11 @@ class Function < Term
     end
   end
 
+  def str
+    arguments_data = arguments.map(&:str).join(' ')
+    "#{function_name}(#{arguments_data})"
+  end
+
   def identify?(function)
     if self.class === function
       function.function_name == function_name &&
@@ -42,5 +47,16 @@ class Function < Term
 
   def free_variables
     arguments.flat_map { |term| term.free_variables }
+  end
+
+  def substitute(target, replace)
+    if identify?(target)
+      replace
+    else
+      arguments_data = arguments.map do |term|
+        term.substitute(target, replace)
+      end.map(&:str).join(' ')
+      self.class.build "#{function_name}(#{arguments_data})"
+    end
   end
 end

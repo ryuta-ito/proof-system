@@ -49,6 +49,10 @@ class Atom < Formula
     end
   end
 
+  def show
+    str
+  end
+
   def identify?(atom)
     return false unless self.class === atom
 
@@ -62,7 +66,26 @@ class Atom < Formula
     end
   end
 
+  def predicate?
+    !predicate_name.empty?
+  end
+
   def free_variables
     arguments.flat_map { |term| term.free_variables }
+  end
+
+  def substitute(target, replace)
+    if identify?(target)
+      replace
+    else
+      if predicate?
+        arguments_data = arguments.map do |term|
+          term.substitute(target, replace)
+        end.map(&:str).join(' ')
+        self.class.build "#{predicate_name}(#{arguments_data})"
+      else
+        self
+      end
+    end
   end
 end

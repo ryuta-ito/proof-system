@@ -16,4 +16,8 @@ class Variable < Term
   def free_variables
     [self]
   end
+
+  def substitute(target, replace)
+    identify?(target) ? replace : self
+  end
 end

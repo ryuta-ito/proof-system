@@ -26,4 +26,14 @@ class Formula::Binary < Formula
   def free_variables
     [left, right].flat_map { |formula| formula.free_variables }
   end
+
+  def substitute(target, replace)
+    if identify?(target)
+      replace
+    else
+      substituted_left = left.substitute(target, replace)
+      substituted_right = right.substitute(target, replace)
+      self.class.build(substituted_left.str, substituted_right.str)
+    end
+  end
 end

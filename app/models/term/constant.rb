@@ -16,4 +16,8 @@ class Constant < Term
   def free_variables
     []
   end
+
+  def substitute(target, replace)
+    identify?(target) ? replace : self
+  end
 end

@@ -22,9 +22,31 @@ class Formula::Quantifier < Formula
     end
   end
 
+  def identify?(quantifier)
+    return false unless self.class === quantifier
+
+    bounded_variable.identify?(quantifier.bounded_variable) &&
+      formula.identify?(quantifier.formula)
+  end
+
   def free_variables
     formula.free_variables.select do |free_variable|
       !free_variable.identify?(bounded_variable)
     end
   end
+
+  def substitute(target, replace)
+    if replace.free_variables.any? { |free_variable| free_variable.identify?(bounded_variable) }
+      raise ReplaceDataBounded
+    end
+
+    return self if target.identify?(bounded_variable)
+
+    self.clone.tap do |quantifier|
+      quantifier.bounded_variable = bounded_variable
+      quantifier.formula = formula.substitute(target, replace)
+    end
+  end
+
+  class ReplaceDataBounded < StandardError; end
 end
