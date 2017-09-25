@@ -1,9 +1,10 @@
 class Formula::Binary < Formula
-  attr_accessor :left, :right
+  attr_accessor :left, :right, :code
 
   class << self
     def build(left_data, right_data)
       new.tap do |binary_formula|
+        binary_formula.code = code
         binary_formula.left, binary_formula.right = [left_data, right_data].map do |left_or_right_data|
           Formula.build left_or_right_data
         end
@@ -16,7 +17,7 @@ class Formula::Binary < Formula
   end
 
   def str
-    "(#{left.str} #{self.code} #{right.str})"
+    "(#{left.str} #{code} #{right.str})"
   end
 
   def identify?(formula)
