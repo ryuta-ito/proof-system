@@ -26,5 +26,6 @@ class ProofFigure
     deductions.each do |deduction|
       deduction.show
     end
+    return
   end
 end
