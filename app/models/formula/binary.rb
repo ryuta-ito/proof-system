@@ -12,10 +12,6 @@ class Formula::Binary < Formula
     end
   end
 
-  def show
-    puts str
-  end
-
   def str
     "(#{left.str} #{code} #{right.str})"
   end

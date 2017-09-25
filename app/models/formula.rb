@@ -60,4 +60,8 @@ class Formula
       end
     end
   end
+
+  def show
+    puts str
+  end
 end

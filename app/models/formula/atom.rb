@@ -49,10 +49,6 @@ class Atom < Formula
     end
   end
 
-  def show
-    str
-  end
-
   def identify?(atom)
     return false unless self.class === atom
 
