@@ -21,4 +21,9 @@ describe Conjunction do
       it { is_expected.to identify(Formula.build 'P(A)∧A') }
     end
   end
+
+  describe '#show' do
+    subject { conjunction.show }
+    it { expect { subject }.to output("(P(x) ∧ A)\n").to_stdout }
+  end
 end
