@@ -10,7 +10,11 @@ class Rules
   end
 
   def show
-    name
+    puts str
+  end
+
+  def str
+    "(#{name})"
   end
 
   def module
@@ -28,7 +32,9 @@ class Rules
     when '∨ I'
       Rules::Introduces::Disjunction
     else
-      raise "no such rule #{name}"
+      raise UnknownRuleName, "no such rule #{name}"
     end
   end
+
+  class UnknownRuleName < StandardError; end
 end
