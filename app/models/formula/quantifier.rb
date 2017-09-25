@@ -1,9 +1,10 @@
 class Formula::Quantifier < Formula
-  attr_accessor :bounded_variable, :formula
+  attr_accessor :code, :bounded_variable, :formula
 
   class << self
     def build(quantifier_data)
       new.tap do |quantifier|
+        quantifier.code = code
         quantifier.bounded_variable = Variable.build(parse_quantifier(quantifier_data)[0])
         quantifier.formula = Formula.build(parse_quantifier(quantifier_data)[1])
       end
@@ -20,6 +21,10 @@ class Formula::Quantifier < Formula
         data.strip
       end
     end
+  end
+
+  def str
+    "#{code}#{bounded_variable.str}.#{formula.str}"
   end
 
   def identify?(quantifier)

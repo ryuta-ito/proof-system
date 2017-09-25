@@ -23,4 +23,9 @@ describe Existence do
       it { expect { subject }.to raise_error Formula::Quantifier::ReplaceDataBounded }
     end
   end
+
+  describe '#show' do
+    subject { existence.show }
+    it { expect { subject }.to output("∃x.P(x y)\n").to_stdout }
+  end
 end
