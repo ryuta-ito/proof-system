@@ -11,8 +11,10 @@ class Term
       when %r{^[a-z]}
         Variable.build(term_data)
       else
-        raise "#{term_data} <- invalid term format"
+        raise UnParsableTerm, "#{term_data} <- invalid term format"
       end
     end
   end
+
+  class UnParsableTerm < StandardError; end
 end
