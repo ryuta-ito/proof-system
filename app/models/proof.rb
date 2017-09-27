@@ -34,11 +34,11 @@ class Proof
   end
 
   def show
-    puts "#{axiom.str} |- #{theorem.str}"
+    puts str
   end
 
   def str
-    "#{axiom.str} |- #{theorem.str}"
+    "#{axiom.str} |- #{ParenthesesParser.strip_edge_parentheses(theorem.str)}"
   end
 
   def obvious?

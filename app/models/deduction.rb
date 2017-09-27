@@ -47,7 +47,7 @@ class Deduction
     upper_proofs_str = upper_proofs.map do |proof|
       proof.str
     end.join("\n")
-    puts "#{upper_proofs_str}\n------ (#{rule.name})\n#{lower_proof.str}"
+    puts "#{upper_proofs_str}\n------ (#{rule.name})\n#{lower_proof.str}."
   end
 
   def satisfy?
