@@ -7,6 +7,7 @@
 # Γ |- Q.      --> proof_b
 
 require 'rules/eliminations'
+require 'rules/commons/axiom'
 
 module Rules::Eliminations::Conjunction
   extend Rules::Commons::Axiom
