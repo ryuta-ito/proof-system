@@ -20,4 +20,19 @@ class Variable < Term
   def substitute(target, replace)
     identify?(target) ? replace : self
   end
+
+  def unify(term)
+    case term
+    when Variable, Constant
+      Unifier.build(term, self)
+    when Function
+      if term.free_variables.any?{ |free_variable| identify?(free_variable) }
+        raise NotImplementedError, 'non permit situation free variables is shared'
+      else
+        Unifier.build(term, self)
+      end
+    else
+      raise UnknownTerm, "#{term.class} is not Term class"
+    end
+  end
 end
