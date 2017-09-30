@@ -34,6 +34,8 @@ class Substitutions
   end
 
   def compose(target_substitutions)
+    return target_substitutions if NonUnifier === target_substitutions
+
     not_belong_target_substitutions = target_substitutions.select do |target_substitution|
       substitutions.all? do |substitution|
         !substitution.target.identify?(target_substitution.target)
