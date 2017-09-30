@@ -35,7 +35,7 @@ class Substitutions
 
   def compose(target_substitutions)
     not_belong_target_substitutions = target_substitutions.select do |target_substitution|
-      substitutions.any? do |substitution|
+      substitutions.all? do |substitution|
         !substitution.target.identify?(target_substitution.target)
       end
     end

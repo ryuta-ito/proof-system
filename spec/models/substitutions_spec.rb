@@ -6,9 +6,18 @@ describe Substitutions do
     let(:substitutions) { Substitutions.new([substitution_A_x]) }
 
     context 'compose empty substitutions' do
-      let(:target_substitutions) { Substitutions.new([]) }
-      let(:target_term) { variable_x }
-      it { is_expected.to identify(constant_A) }
+      context 'target substitution is empty' do
+        let(:target_substitutions) { Substitutions.new([]) }
+        let(:target_term) { variable_x }
+        it { is_expected.to identify(constant_A) }
+      end
+
+      context 'receiver substitutions is empty' do
+        let(:substitutions) { Substitutions.new([]) }
+        let(:target_substitutions) { Substitutions.new([substitution_A_x]) }
+        let(:target_term) { variable_x }
+        it { is_expected.to identify(constant_A) }
+      end
     end
 
     context 'compose only non belong substitutions' do
