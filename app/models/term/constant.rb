@@ -20,4 +20,17 @@ class Constant < Term
   def substitute(target, replace)
     identify?(target) ? replace : self
   end
+
+  def unify(term)
+    case term
+    when Variable
+      Unifier.build(self, term)
+    when Constant
+      identify?(term) ? Unifier.build : NonUnifier.build
+    when Function
+      NonUnifier.build
+    else
+      raise UnknownTerm, "#{term.class} is not Term class"
+    end
+  end
 end

@@ -18,4 +18,5 @@ class Term
   end
 
   class UnParsableTerm < StandardError; end
+  class UnknownTerm < StandardError; end
 end
