@@ -1,4 +1,5 @@
-# term: #   <constant> | <variable> | <function>
+# term:
+#   <constant> | <variable> | <function>
 
 class Term
   class << self
