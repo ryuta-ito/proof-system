@@ -59,4 +59,27 @@ class Function < Term
       self.class.build "#{function_name}(#{arguments_data})"
     end
   end
+
+  def unify(term)
+    case term
+    when Constant
+      NonUnifier.build
+    when Variable
+      term.unify self
+    when Function
+      unify_function term
+    end
+  end
+
+  private
+
+  def unify_function(target)
+    if arguments.size == target.arguments.size && function_name == target.function_name
+      arguments.zip(target.arguments).reduce(Unifier.build) do |unifier, (term_a, term_b)|
+        unifier.compose term_a.unify(term_b)
+      end
+    else
+      NonUnifier.build
+    end
+  end
 end
