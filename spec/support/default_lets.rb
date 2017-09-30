@@ -3,11 +3,11 @@ shared_context 'default lets' do
     let("variable_#{var}".to_sym) { Variable.build(var) }
   end
 
-  %w[A B C].each do |c|
+  %w[A B C D].each do |c|
     let("constant_#{c}".to_sym) { Constant.build(c) }
   end
 
-  %w[f].each do |fun|
+  %w[f g].each do |fun|
     %w[A B x y].each do |arg_1|
       let("function_#{fun}_#{arg_1}") { Function.build("#{fun}(#{arg_1})") }
 
