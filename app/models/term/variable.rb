@@ -22,6 +22,8 @@ class Variable < Term
   end
 
   def unify(term)
+    return Unifier.build if identify?(term)
+
     case term
     when Variable, Constant
       Unifier.build(term, self)
