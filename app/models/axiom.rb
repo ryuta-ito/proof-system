@@ -24,6 +24,8 @@ class Axiom
   end
 
   def identify?(axiom)
+    return false unless self.class === axiom
+
     formulas.map do |formula_a|
       axiom.formulas.map do |formula_b|
         formula_a.identify? formula_b
