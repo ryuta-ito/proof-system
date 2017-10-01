@@ -60,6 +60,12 @@ class Substitutions
     end
   end
 
+  def variable_include?(variable)
+    substitutions.any? do |substitution|
+      substitution.variable_include? variable
+    end
+  end
+
   class Substitution
     attr_accessor :replace, :target
 
@@ -85,6 +91,12 @@ class Substitutions
 
     def apply(term)
       term.substitute(target, replace)
+    end
+
+    def variable_include?(target_variable)
+      [replace, target].any? do |term|
+        term.free_variables.any? { |variable| target_variable.identify?(variable) }
+      end
     end
   end
 end
