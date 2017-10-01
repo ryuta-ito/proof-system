@@ -53,5 +53,17 @@ class Formula::Quantifier < Formula
     end
   end
 
+  def unify(target_formula)
+    return NonUnifier.build unless self.class === target_formula
+
+    unifier = formula.unify(target_formula.formula)
+
+    if unifier.variable_include?(bounded_variable)
+      raise NotImplementedError
+    else
+      unifier
+    end
+  end
+
   class ReplaceDataBounded < StandardError; end
 end

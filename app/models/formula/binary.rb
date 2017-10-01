@@ -33,4 +33,12 @@ class Formula::Binary < Formula
       self.class.build(substituted_left.str, substituted_right.str)
     end
   end
+
+  def unify(target_formula)
+    return NonUnifier.build unless self.class === target_formula
+
+    [left, right].zip([target_formula.left, target_formula.right]).reduce(Unifier.build) do |unifier, (formula_a, formula_b)|
+      unifier.compose formula_a.unify(formula_b)
+    end
+  end
 end

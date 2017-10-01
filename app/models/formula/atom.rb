@@ -84,4 +84,17 @@ class Atom < Formula
       end
     end
   end
+
+  def unify(target_formula)
+    condition = (self.class === target_formula) &&
+      arguments.size == target_formula.arguments.size &&
+      predicate_name == target_formula.predicate_name
+
+    return NonUnifier.build unless condition
+    return Unifier.build if identify?(target_formula)
+
+    arguments.zip(target_formula.arguments).reduce(Unifier.build) do |unifier, (term_a, term_b)|
+      unifier.compose term_a.unify(term_b)
+    end
+  end
 end
