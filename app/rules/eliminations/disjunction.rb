@@ -8,7 +8,7 @@ require 'rules/eliminations'
 
 module Rules::Eliminations::Disjunction
   def self.satisfy?(deduction)
-    proof_a, proof_b, proof_c, proof_d = deduction.upper_proofs
+    proof_a, proof_b, proof_c = deduction.upper_proofs
     proof_d = deduction.lower_proof
 
     Disjunction === proof_a.theorem &&
