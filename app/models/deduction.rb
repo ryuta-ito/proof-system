@@ -27,7 +27,7 @@ class Deduction
     private
 
     def parse_deductions(deductions_data)
-      deductions_data.split('.')
+      deductions_data.split(/\.$/)
     end
 
     def parse_deduction_upper(deduction_data)
