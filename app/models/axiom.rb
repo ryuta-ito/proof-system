@@ -44,4 +44,8 @@ class Axiom
       diffed_axiom.formulas = diff_a + diff_b
     end
   end
+
+  def free_variables
+    formulas.flat_map &:free_variables
+  end
 end
