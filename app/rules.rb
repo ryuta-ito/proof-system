@@ -35,6 +35,10 @@ class Rules
       Rules::Eliminations::Existence
     when '∃ I'
       Rules::Introduces::Existence
+    when '∀ E'
+      Rules::Eliminations::Universal
+    when '∀ I'
+      Rules::Introduces::Universal
     else
       raise UnknownRuleName, "no such rule #{name}"
     end

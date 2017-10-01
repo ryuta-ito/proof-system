@@ -1,7 +1,7 @@
 describe Rules::Introduces::Existence do
   describe '.satisfy?' do
     let(:deduction) { Deduction.build(deduction_data) }
-    subject { Rules::Introduces::Existence.satisfy?(deduction) }
+    subject { deduction.satisfy? }
 
     context 'valid' do
       context 'atom' do
