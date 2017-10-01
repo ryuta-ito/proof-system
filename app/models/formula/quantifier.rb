@@ -17,8 +17,8 @@ class Formula::Quantifier < Formula
     private
 
     def parse_quantifier(quantifier_data)
-      quantifier_data.split(/#{code}|\./).drop(1).map do |data|
-        data.strip
+      quantifier_data.sub(/^\s*#{code}/, '').split('.', 2).map do |data|
+        ParenthesesParser.strip_edge_parentheses data.strip
       end
     end
   end
