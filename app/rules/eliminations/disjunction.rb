@@ -14,7 +14,7 @@ module Rules::Eliminations::Disjunction
     Disjunction === proof_a.theorem &&
       proof_b.theorem.identify?(proof_c.theorem) &&
       proof_c.theorem.identify?(proof_d.theorem) &&
-      proof_a.axiom.xor_diff(proof_b.axiom).formulas.first.identify?(proof_a.theorem.left) &&
-      proof_a.axiom.xor_diff(proof_c.axiom).formulas.first.identify?(proof_a.theorem.right)
+      proof_b.axiom.diff(proof_a.axiom).formulas.first.identify?(proof_a.theorem.left) &&
+      proof_c.axiom.diff(proof_a.axiom).formulas.first.identify?(proof_a.theorem.right)
   end
 end
