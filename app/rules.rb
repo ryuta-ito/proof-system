@@ -31,6 +31,10 @@ class Rules
       Rules::Eliminations::Disjunction
     when '∨ I'
       Rules::Introduces::Disjunction
+    when '∃ E'
+      Rules::Eliminations::Existence
+    when '∃ I'
+      Rules::Introduces::Existence
     else
       raise UnknownRuleName, "no such rule #{name}"
     end
