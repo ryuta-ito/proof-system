@@ -45,7 +45,26 @@ class Axiom
     end
   end
 
+  def diff(axiom)
+    Axiom.new.tap do |diffed_axiom|
+      diffed_axiom.formulas = multi_set_diff(formulas, axiom.formulas)
+    end
+  end
+
   def free_variables
     formulas.flat_map &:free_variables
+  end
+
+  private
+
+  def multi_set_diff(formulas_a, formulas_b)
+    return [] if formulas_a.empty?
+    index = formulas_b.find_index { |formula_b| formulas_a.first.identify?(formula_b) }
+
+    if index
+      multi_set_diff(formulas_a.drop(1), formulas_b.select.with_index { |_, i| i != index } )
+    else
+      [formulas_a.first] + multi_set_diff(formulas_a.drop(1), formulas_b)
+    end
   end
 end
