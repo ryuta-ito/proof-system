@@ -11,6 +11,8 @@ class Atom < Formula
         Existence.build(atom_data)
       when %r{^#{Universal.code}}
         Universal.build(atom_data)
+      when %r{^#{Contradiction.str}}
+        Contradiction.new
       else
         build_atom(atom_data)
       end
