@@ -39,6 +39,10 @@ class Rules
       Rules::Eliminations::Universal
     when '∀ I'
       Rules::Introduces::Universal
+    when '¬ E'
+      Rules::Eliminations::Negation
+    when '¬ I'
+      Rules::Introduces::Negation
     else
       raise UnknownRuleName, "no such rule #{name}"
     end
