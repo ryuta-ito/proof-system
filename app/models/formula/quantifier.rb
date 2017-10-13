@@ -1,13 +1,13 @@
 class Formula::Quantifier < Formula
   attr_accessor :code, :bounded_variable, :formula
 
+  include ActiveModel::Model
+
   class << self
     def build(quantifier_data)
-      new.tap do |quantifier|
-        quantifier.code = code
-        quantifier.bounded_variable = Variable.build(parse_quantifier(quantifier_data)[0])
-        quantifier.formula = Formula.build(parse_quantifier(quantifier_data)[1])
-      end
+      new( code: code,
+           bounded_variable: Variable.build(parse_quantifier(quantifier_data)[0]),
+           formula: Formula.build(parse_quantifier(quantifier_data)[1]) )
     end
 
     def code

@@ -7,13 +7,17 @@ require 'rules/commons/deduction'
 
 class ProofFigure
   attr_accessor :deductions
+
+  include ActiveModel::Model
   include Rules::Commons::Deduction
 
   class << self
     def build_by_file(file_path)
-      new.tap do |proof_figure|
-        proof_figure.deductions = Deduction.multi_build_by_file(file_path)
-      end
+      new( deductions: Deduction.multi_build_by_file(file_path) )
+    end
+
+    def create_proof_figure(proof)
+      proof.possible_premises
     end
   end
 
@@ -23,9 +27,7 @@ class ProofFigure
   end
 
   def show
-    deductions.each do |deduction|
-      deduction.show
-    end
+    deductions.each { |deduction| deduction.show }
     return
   end
 end

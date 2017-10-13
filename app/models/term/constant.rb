@@ -3,10 +3,10 @@
 class Constant < Term
   attr_accessor :str
 
+  include ActiveModel::Model
+
   def self.build(constant_data)
-    new.tap do |constant|
-      constant.str = constant_data
-    end
+    new( str: constant_data )
   end
 
   def identify?(constant)

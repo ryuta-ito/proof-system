@@ -4,14 +4,12 @@
 class Function < Term
   attr_accessor :function_name, :arguments
 
+  include ActiveModel::Model
+
   class << self
     def build(function_data)
-      new.tap do |function|
-        function.function_name = parse_function_name(function_data)
-        function.arguments = parse_arguments(function_data).map do |term|
-          super term
-        end
-      end
+      new( function_name: parse_function_name(function_data),
+           arguments: parse_arguments(function_data).map { |term| super term } )
     end
 
     private

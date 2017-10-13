@@ -4,12 +4,12 @@
 class Axiom
   attr_accessor :str, :formulas
 
+  include ActiveModel::Model
+
   class << self
     def build(axiom_data)
-      new.tap do |axiom|
-        axiom.str = axiom_data
-        axiom.formulas = Formula.multi_build(parse_axiom axiom_data)
-      end
+      new( str: axiom_data,
+           formulas: Formula.multi_build(parse_axiom axiom_data) )
     end
 
     private

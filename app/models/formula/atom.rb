@@ -4,6 +4,8 @@
 class Atom < Formula
   attr_accessor :str, :predicate_name, :arguments
 
+  include ActiveModel::Model
+
   class << self
     def build(atom_data)
       case atom_data
@@ -23,13 +25,9 @@ class Atom < Formula
     private
 
     def build_atom(atom_data)
-      new.tap do |atom|
-        atom.str = atom_data
-        atom.predicate_name = parse_predicate_name(atom_data)
-        atom.arguments = parse_arguments(atom_data).map do |term_data|
-          Term.build(term_data)
-        end
-      end
+      new( str: atom_data,
+           predicate_name: parse_predicate_name(atom_data),
+           arguments: parse_arguments(atom_data).map { |term_data| Term.build(term_data) } )
     end
 
     def parse_predicate_name(atom_data)

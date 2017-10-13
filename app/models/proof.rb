@@ -4,6 +4,8 @@
 class Proof
   attr_accessor :axiom, :theorem
 
+  include ActiveModel::Model
+
   class << self
     def multi_build(upper_proofs_data)
       parse_upper_proofs_data(upper_proofs_data).map do |proof_data|
@@ -12,10 +14,8 @@ class Proof
     end
 
     def build(proof_data)
-      new.tap do |proof|
-        proof.axiom = Axiom.build parse_left(proof_data)
-        proof.theorem = Formula.build parse_right(proof_data)
-      end
+      new( axiom: Axiom.build(parse_left proof_data),
+           theorem: Formula.build(parse_right proof_data) )
     end
 
     private
@@ -43,7 +43,14 @@ class Proof
 
   def obvious?
     axiom.formulas.any? do |formula|
-      theorem.identify? formula
+      theorem.class === formula && theorem.identify?(formula)
     end
+  end
+
+  def create_proof_figure
+    ProofFigure.create_proof_figure(self)
+  end
+
+  def possible_premises
   end
 end

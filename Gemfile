@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'pry'
+gem 'activemodel'
 
 group :test do
   gem 'rspec', '~> 3'

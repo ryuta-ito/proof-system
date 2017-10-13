@@ -3,10 +3,10 @@
 class Variable < Term
   attr_accessor :str
 
+  include ActiveModel::Model
+
   def self.build(variable_data)
-    new.tap do |variable|
-      variable.str = variable_data
-    end
+    new( str: variable_data )
   end
 
   def identify?(variable)

@@ -4,11 +4,11 @@
 class Negation < Formula
   attr_accessor :str, :formula
 
+  include ActiveModel::Model
+
   class << self
     def build(negation_data)
-      new.tap do |negation|
-        negation.formula = Formula.build(parse_negation negation_data)
-      end
+      new( formula: Formula.build(parse_negation negation_data) )
     end
 
     def code

@@ -9,6 +9,8 @@
 class Deduction
   attr_accessor :upper_proofs, :lower_proof, :rule
 
+  include ActiveModel::Model
+
   class << self
     def multi_build_by_file(file_path)
       parse_deductions(FileConnector.read file_path).map do |deduction_data|
@@ -17,11 +19,9 @@ class Deduction
     end
 
     def build(deduction_data)
-      new.tap do |deduction|
-        deduction.upper_proofs = Proof.multi_build(parse_deduction_upper deduction_data)
-        deduction.lower_proof = Proof.build(parse_deduction_lower deduction_data)
-        deduction.rule = Rules.build(parse_rule_name deduction_data)
-      end
+      new( upper_proofs: Proof.multi_build(parse_deduction_upper deduction_data),
+           lower_proof: Proof.build(parse_deduction_lower deduction_data),
+           rule: Rules.build(parse_rule_name deduction_data) )
     end
 
     private

@@ -1,3 +1,4 @@
+require 'active_model'
 require 'yaml'
 require 'pry'
 
