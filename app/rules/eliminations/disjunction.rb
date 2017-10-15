@@ -1,20 +1,20 @@
-# Γ    |- P ∨ Q --> proof_a
-# Γ, P |- R     --> proof_b
-# Γ, Q |- R     --> proof_c
+# Γ    |- P ∨ Q --> sequent_a
+# Γ, P |- R     --> sequent_b
+# Γ, Q |- R     --> sequent_c
 # ------ (∨ E)
-# Γ    |- R.    --> proof_d
+# Γ    |- R.    --> sequent_d
 
 require 'rules/eliminations'
 
 module Rules::Eliminations::Disjunction
   def self.satisfy?(deduction)
-    proof_a, proof_b, proof_c = deduction.upper_proofs
-    proof_d = deduction.lower_proof
+    sequent_a, sequent_b, sequent_c = deduction.upper_sequents
+    sequent_d = deduction.lower_sequent
 
-    Disjunction === proof_a.theorem &&
-      proof_b.theorem.identify?(proof_c.theorem) &&
-      proof_c.theorem.identify?(proof_d.theorem) &&
-      proof_b.axiom.diff(proof_a.axiom).formulas.first.identify?(proof_a.theorem.left) &&
-      proof_c.axiom.diff(proof_a.axiom).formulas.first.identify?(proof_a.theorem.right)
+    Disjunction === sequent_a.theorem &&
+      sequent_b.theorem.identify?(sequent_c.theorem) &&
+      sequent_c.theorem.identify?(sequent_d.theorem) &&
+      sequent_b.axiom.diff(sequent_a.axiom).formulas.first.identify?(sequent_a.theorem.left) &&
+      sequent_c.axiom.diff(sequent_a.axiom).formulas.first.identify?(sequent_a.theorem.right)
   end
 end

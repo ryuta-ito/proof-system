@@ -1,10 +1,10 @@
-# Γ |- P      --> proof_a
+# Γ |- P      --> sequent_a
 # ------ (∨ I)
-# Γ |- P ∨ Q. --> proof_b
+# Γ |- P ∨ Q. --> sequent_b
 #
-# Γ |- Q      --> proof_a
+# Γ |- Q      --> sequent_a
 # ------ (∨ I)
-# Γ |- P ∨ Q. --> proof_b
+# Γ |- P ∨ Q. --> sequent_b
 
 require 'rules/commons/axiom'
 
@@ -12,12 +12,12 @@ module Rules::Introduces::Disjunction
   extend Rules::Commons::Axiom
 
   def self.satisfy?(deduction)
-    proof_a = deduction.upper_proofs.first
-    proof_b = deduction.lower_proof
+    sequent_a = deduction.upper_sequents.first
+    sequent_b = deduction.lower_sequent
 
     axioms_equal?(deduction) &&
-      Disjunction === proof_b.theorem &&
-      ( proof_b.theorem.left.identify?(proof_a.theorem) ||
-        proof_b.theorem.right.identify?(proof_a.theorem) )
+      Disjunction === sequent_b.theorem &&
+      ( sequent_b.theorem.left.identify?(sequent_a.theorem) ||
+        sequent_b.theorem.right.identify?(sequent_a.theorem) )
   end
 end

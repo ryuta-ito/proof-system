@@ -1,6 +1,6 @@
-describe ProofFigure do
-  let(:proof_figure) { ProofFigure.build_by_file('dummy_file_path') }
-  let(:proof_figure_data) do
+describe SequentFigure do
+  let(:sequent_figure) { SequentFigure.build_by_file('dummy_file_path') }
+  let(:sequent_figure_data) do
     <<~EOS
       {A => B, C => A, C} |- C => A
       {A => B, C => A, C} |- C
@@ -22,17 +22,17 @@ describe ProofFigure do
     EOS
   end
   include_context 'use File.read mock'
-  let(:file_connector_read_text) { proof_figure_data }
+  let(:file_connector_read_text) { sequent_figure_data }
 
   describe '.satisfy?' do
-    subject { proof_figure.satisfy? }
+    subject { sequent_figure.satisfy? }
 
     context 'valid' do
       it { is_expected.to be true }
     end
 
     context '∀x.P(x) ∨ Q => ∀y.(P(y) ∨ Q)' do
-      let(:proof_figure_data) do
+      let(:sequent_figure_data) do
         <<~EOS
           {∀x.P(x) ∨ Q, ∀x.P(x)} |- ∀x.P(x)
           ------ (∀ E)
@@ -66,7 +66,7 @@ describe ProofFigure do
   end
 
   describe '#show' do
-    subject { proof_figure.show }
-    it { expect { subject }.to output(proof_figure_data).to_stdout }
+    subject { sequent_figure.show }
+    it { expect { subject }.to output(sequent_figure_data).to_stdout }
   end
 end

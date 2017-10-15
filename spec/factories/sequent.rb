@@ -1,4 +1,4 @@
 FactoryGirl.define do
-  factory :proof do
+  factory :sequent do
   end
 end

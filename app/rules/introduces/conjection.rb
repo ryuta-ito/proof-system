@@ -1,7 +1,7 @@
-# Γ |- P       --> proof_a
-# Γ |- Q       --> proof_b
+# Γ |- P       --> sequent_a
+# Γ |- Q       --> sequent_b
 # ------ (∧ I)
-# Γ |- P ∧ Q.  --> proof_c
+# Γ |- P ∧ Q.  --> sequent_c
 
 require 'rules/introduces'
 
@@ -9,12 +9,12 @@ module Rules::Introduces::Conjunction
   extend Rules::Commons::Axiom
 
   def self.satisfy?(deduction)
-    proof_a, proof_b = deduction.upper_proofs
-    proof_c = deduction.lower_proof
+    sequent_a, sequent_b = deduction.upper_sequents
+    sequent_c = deduction.lower_sequent
 
     axioms_equal?(deduction) &&
-      Conjunction === proof_c.theorem &&
-      proof_c.theorem.left.identify?(proof_a.theorem) &&
-      proof_c.theorem.right.identify?(proof_b.theorem)
+      Conjunction === sequent_c.theorem &&
+      sequent_c.theorem.left.identify?(sequent_a.theorem) &&
+      sequent_c.theorem.right.identify?(sequent_b.theorem)
   end
 end

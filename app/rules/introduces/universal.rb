@@ -1,6 +1,6 @@
-# Γ |- P(x)       <- proof_a
+# Γ |- P(x)       <- sequent_a
 # ------ (∀ I)
-# Γ |- ∀x.P(x) <- proof_b
+# Γ |- ∀x.P(x) <- sequent_b
 #
 # x ∉ FV(Γ)
 
@@ -10,13 +10,13 @@ module Rules::Introduces::Universal
   extend Rules::Commons::Axiom
 
   def self.satisfy?(deduction)
-    proof_a, _ = deduction.upper_proofs
-    proof_b = deduction.lower_proof
-    bounded_variable = proof_b.theorem.bounded_variable
+    sequent_a, _ = deduction.upper_sequents
+    sequent_b = deduction.lower_sequent
+    bounded_variable = sequent_b.theorem.bounded_variable
 
-    (Universal === proof_b.theorem) &&
+    (Universal === sequent_b.theorem) &&
       axioms_equal?(deduction) &&
-      proof_a.theorem.identify?(proof_b.theorem.formula) &&
-      !(proof_a.axiom.free_variables.any? { |variable| bounded_variable.identify?(variable) })
+      sequent_a.theorem.identify?(sequent_b.theorem.formula) &&
+      !(sequent_a.axiom.free_variables.any? { |variable| bounded_variable.identify?(variable) })
   end
 end

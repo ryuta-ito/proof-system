@@ -1,5 +1,5 @@
-# Γ |- P => Q  --> proof_a
-# Γ |- P       --> proof_b
+# Γ |- P => Q  --> sequent_a
+# Γ |- P       --> sequent_b
 # ------ (=> E)
 # Γ |- Q.
 
@@ -9,11 +9,11 @@ module Rules::Eliminations::Imply
   extend Rules::Commons::Axiom
 
   def self.satisfy?(deduction)
-    proof_a, proof_b = deduction.upper_proofs
+    sequent_a, sequent_b = deduction.upper_sequents
 
     axioms_equal?(deduction) &&
-      Imply === proof_a.theorem &&
-      proof_a.theorem.left.identify?(proof_b.theorem) &&
-      proof_a.theorem.right.identify?(deduction.lower_proof.theorem)
+      Imply === sequent_a.theorem &&
+      sequent_a.theorem.left.identify?(sequent_b.theorem) &&
+      sequent_a.theorem.right.identify?(deduction.lower_sequent.theorem)
   end
 end

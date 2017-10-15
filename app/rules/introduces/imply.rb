@@ -1,6 +1,6 @@
-# Γ, P |- Q     --> proof_a
+# Γ, P |- Q     --> sequent_a
 # ------ (=> I)
-# Γ |- P => Q   --> proof_b
+# Γ |- P => Q   --> sequent_b
 
 require 'rules/introduces'
 require 'rules/commons/axiom'
@@ -9,11 +9,11 @@ module Rules::Introduces::Imply
   extend Rules::Commons::Axiom
 
   def self.satisfy?(deduction)
-    proof_a = deduction.upper_proofs.first
-    proof_b = deduction.lower_proof
+    sequent_a = deduction.upper_sequents.first
+    sequent_b = deduction.lower_sequent
 
-    proof_a.theorem.identify?(proof_b.theorem.right) &&
-      proof_a.axiom.formulas.any? { |formula| formula.identify?(proof_b.theorem.left) } &&
-      proof_a.axiom.xor_diff(proof_b.axiom).formulas.first.identify?(proof_b.theorem.left)
+    sequent_a.theorem.identify?(sequent_b.theorem.right) &&
+      sequent_a.axiom.formulas.any? { |formula| formula.identify?(sequent_b.theorem.left) } &&
+      sequent_a.axiom.xor_diff(sequent_b.axiom).formulas.first.identify?(sequent_b.theorem.left)
   end
 end

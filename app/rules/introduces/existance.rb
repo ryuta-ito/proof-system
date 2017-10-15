@@ -11,8 +11,8 @@ module Rules::Introduces::Existence
   extend Rules::Commons::Axiom
 
   def self.satisfy?(deduction)
-    theorem_a = deduction.upper_proofs.first.theorem
-    theorem_b = deduction.lower_proof.theorem
+    theorem_a = deduction.upper_sequents.first.theorem
+    theorem_b = deduction.lower_sequent.theorem
     bounded_variable = theorem_b.bounded_variable
 
     return false unless axioms_equal?(deduction) && Existence === theorem_b

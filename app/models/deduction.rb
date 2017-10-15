@@ -1,13 +1,13 @@
 # deduction:
-#   <upper_proofs>
+#   <upper_sequents>
 #   ------ (<rule_name>)
-#   <lower_proof>.
+#   <lower_sequent>.
 #
-# uppper_proofs:
-#   <proof_1>, ..., <proof_n>
+# uppper_sequents:
+#   <sequent_1>, ..., <sequent_n>
 
 class Deduction
-  attr_accessor :upper_proofs, :lower_proof, :rule
+  attr_accessor :upper_sequents, :lower_sequent, :rule
 
   include ActiveModel::Model
 
@@ -19,8 +19,8 @@ class Deduction
     end
 
     def build(deduction_data)
-      new( upper_proofs: Proof.multi_build(parse_deduction_upper deduction_data),
-           lower_proof: Proof.build(parse_deduction_lower deduction_data),
+      new( upper_sequents: Sequent.multi_build(parse_deduction_upper deduction_data),
+           lower_sequent: Sequent.build(parse_deduction_lower deduction_data),
            rule: Rules.build(parse_rule_name deduction_data) )
     end
 
@@ -44,10 +44,10 @@ class Deduction
   end
 
   def show
-    upper_proofs_str = upper_proofs.map do |proof|
-      proof.str
+    upper_sequents_str = upper_sequents.map do |sequent|
+      sequent.str
     end.join("\n")
-    puts "#{upper_proofs_str}\n------ (#{rule.name})\n#{lower_proof.str}."
+    puts "#{upper_sequents_str}\n------ (#{rule.name})\n#{lower_sequent.str}."
   end
 
   def satisfy?
@@ -55,10 +55,10 @@ class Deduction
   end
 
   def obvious?
-    upper_proofs.all? { |upper_proof| upper_proof.obvious? }
+    upper_sequents.all? { |upper_sequent| upper_sequent.obvious? }
   end
 
-  def all_proofs
-    upper_proofs + [lower_proof]
+  def all_sequents
+    upper_sequents + [lower_sequent]
   end
 end

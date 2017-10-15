@@ -1,10 +1,10 @@
-# Γ |- P ∧ Q   --> proof_a
+# Γ |- P ∧ Q   --> sequent_a
 # ------ (∧ E)
-# Γ |- P.      --> proof_b
+# Γ |- P.      --> sequent_b
 #
-# Γ |- P ∧ Q   --> proof_a
+# Γ |- P ∧ Q   --> sequent_a
 # ------ (∧ E)
-# Γ |- Q.      --> proof_b
+# Γ |- Q.      --> sequent_b
 
 require 'rules/eliminations'
 require 'rules/commons/axiom'
@@ -13,12 +13,12 @@ module Rules::Eliminations::Conjunction
   extend Rules::Commons::Axiom
 
   def self.satisfy?(deduction)
-    proof_a = deduction.upper_proofs.first
-    proof_b = deduction.lower_proof
+    sequent_a = deduction.upper_sequents.first
+    sequent_b = deduction.lower_sequent
 
     axioms_equal?(deduction) &&
-      Conjunction === proof_a.theorem &&
-      ( proof_a.theorem.left.identify?(proof_b.theorem) ||
-        proof_a.theorem.right.identify?(proof_b.theorem) )
+      Conjunction === sequent_a.theorem &&
+      ( sequent_a.theorem.left.identify?(sequent_b.theorem) ||
+        sequent_a.theorem.right.identify?(sequent_b.theorem) )
   end
 end

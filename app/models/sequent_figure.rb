@@ -1,11 +1,11 @@
-# proof_figure:
+# sequent_figure:
 #   <deduction_1>.
 #   ...
 #   <deduction_n>.
 
 require 'rules/commons/deduction'
 
-class ProofFigure
+class SequentFigure
   attr_accessor :deductions
 
   include ActiveModel::Model
@@ -16,13 +16,13 @@ class ProofFigure
       new( deductions: Deduction.multi_build_by_file(file_path) )
     end
 
-    def create_proof_figure(proof)
-      proof.possible_premises
+    def create_sequent_figure(sequent)
+      sequent.possible_premises
     end
   end
 
   def satisfy?
-    upper_proofs_satisfy?(deductions) &&
+    upper_sequents_satisfy?(deductions) &&
       deductions.all? { |deduction| deduction.satisfy? }
   end
 
