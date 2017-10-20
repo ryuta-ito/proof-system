@@ -27,7 +27,6 @@ class SequentFigure
   end
 
   def show
-    deductions.each { |deduction| deduction.show }
-    return
+    deductions.each { |deduction| deduction.show }; nil
   end
 end
