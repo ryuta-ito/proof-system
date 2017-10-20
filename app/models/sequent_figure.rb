@@ -15,10 +15,6 @@ class SequentFigure
     def build_by_file(file_path)
       new( deductions: Deduction.multi_build_by_file(file_path) )
     end
-
-    def create_sequent_figure(sequent)
-      sequent.possible_premises
-    end
   end
 
   def satisfy?

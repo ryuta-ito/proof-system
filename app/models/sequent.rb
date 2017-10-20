@@ -50,7 +50,4 @@ class Sequent
   def create_sequent_figure
     SequentFigure.create_sequent_figure(self)
   end
-
-  def possible_premises
-  end
 end
