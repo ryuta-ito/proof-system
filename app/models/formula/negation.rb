@@ -2,7 +2,7 @@
 #   ¬<formula>
 
 class Negation < Formula
-  attr_accessor :str, :formula
+  attr_accessor :formula
 
   include ActiveModel::Model
 
