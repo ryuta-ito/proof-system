@@ -6,10 +6,10 @@ describe Rules::Eliminations::Negation do
     context 'valid' do
       let(:deduction_data) do
         <<~EOS
-          {P, ¬P} |- P
-          {P, ¬P} |- ¬P
+          P, ¬P |- P
+          P, ¬P |- ¬P
           ------ (¬ E)
-          {P, ¬P} |- ⊥
+          P, ¬P |- ⊥
         EOS
       end
       it { is_expected.to be true}

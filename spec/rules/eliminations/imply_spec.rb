@@ -6,10 +6,10 @@ describe Rules::Eliminations::Imply do
     context 'valid' do
       let(:deduction_data) do
         """
-          {A => B, A} |- A => B
-          {A => B, A} |- A
+          A => B, A |- A => B
+          A => B, A |- A
           ------ (=> E)
-          {A => B, A} |- B
+          A => B, A |- B
         """
       end
       it { is_expected.to be true}
@@ -18,10 +18,10 @@ describe Rules::Eliminations::Imply do
     context 'invalid' do
       let(:deduction_data) do
         """
-          {A => B, A} |- A => B
-          {A => B, A} |- A
+          A => B, A |- A => B
+          A => B, A |- A
           ------ (=> E)
-          {A => B, A} |- A
+          A => B, A |- A
         """
       end
       it { is_expected.to be false}

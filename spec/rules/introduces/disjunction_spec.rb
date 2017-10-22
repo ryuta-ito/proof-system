@@ -6,9 +6,9 @@ describe Rules::Introduces::Disjunction do
     context 'valid' do
       let(:deduction_data) do
         """
-          {A} |- A
+          A |- A
           ------ (∨ I)
-          {A} |- A ∨ B
+          A |- A ∨ B
         """
       end
       it { is_expected.to be true}

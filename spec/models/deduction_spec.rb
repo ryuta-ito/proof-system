@@ -8,9 +8,9 @@ describe Deduction do
       context 'conjunction' do
         let(:deduction_data) do
           '''
-            {A∧B} |- A∧B
+            A∧B |- A∧B
             ------ (∧ E)
-            {A∧B} |- B
+            A∧B |- B
           '''
         end
         it { is_expected.to be true }
@@ -19,11 +19,11 @@ describe Deduction do
       context 'disjunction' do
         let(:deduction_data) do
           '''
-            {P ∨ Q, R}    |- P ∨ Q
-            {P ∨ Q, R, P} |- R
-            {P ∨ Q, R, Q} |- R
+            P ∨ Q, R    |- P ∨ Q
+            P ∨ Q, R, P |- R
+            P ∨ Q, R, Q |- R
             ------ (∨ E)
-            {P ∨ Q, R} |- R
+            P ∨ Q, R |- R
           '''
         end
         it { is_expected.to be true }
@@ -34,10 +34,10 @@ describe Deduction do
       context 'conjunction' do
         let(:deduction_data) do
           '''
-            {A,B} |- A
-            {A,B} |- B
+            A,B |- A
+            A,B |- B
             ------ (∧ I)
-            {A,B} |- A∧B
+            A,B |- A∧B
           '''
         end
         it { is_expected.to be true }
@@ -46,9 +46,9 @@ describe Deduction do
       context 'disjunction' do
         let(:deduction_data) do
           '''
-            {P} |- P
+            P |- P
             ------ (∨ I)
-            {P} |- P ∨ Q
+            P |- P ∨ Q
           '''
         end
         it { is_expected.to be true }

@@ -6,11 +6,11 @@ describe Rules::Eliminations::Disjunction do
     context 'valid' do
       let(:deduction_data) do
         """
-          {P ∨ Q, R}    |- P ∨ Q
-          {P ∨ Q, R, P} |- R
-          {P ∨ Q, R, Q} |- R
+          P ∨ Q, R    |- P ∨ Q
+          P ∨ Q, R, P |- R
+          P ∨ Q, R, Q |- R
           ------ (∨ E)
-          {P ∨ Q, R} |- R
+          P ∨ Q, R |- R
         """
       end
       it { is_expected.to be true}

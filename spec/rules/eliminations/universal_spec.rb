@@ -6,9 +6,9 @@ describe Rules::Eliminations::Universal do
     context 'valid' do
       let(:deduction_data) do
         <<~EOS
-          {∀x.P(x)} |- ∀x.P(x)
+          ∀x.P(x) |- ∀x.P(x)
           ------ (∀ E)
-          {∀x.P(x)} |- P(C)
+          ∀x.P(x) |- P(C)
         EOS
       end
       it { is_expected.to be true}

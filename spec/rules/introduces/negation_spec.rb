@@ -6,9 +6,9 @@ describe Rules::Introduces::Negation do
     context 'valid' do
       let(:deduction_data) do
         <<~EOS
-          {⊥, P} |- ⊥
+          ⊥, P |- ⊥
           ------ (¬ I)
-          {⊥} |- ¬P
+          ⊥ |- ¬P
         EOS
       end
       it { is_expected.to be true}

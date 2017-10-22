@@ -6,9 +6,9 @@ describe Rules::Eliminations::Conjunction do
     context 'valid' do
       let(:deduction_data) do
         """
-          {A ∧ B} |- A ∧ B
+          A ∧ B |- A ∧ B
           ------ (∧ E)
-          {A ∧ B} |- A
+          A ∧ B |- A
         """
       end
       it { is_expected.to be true}

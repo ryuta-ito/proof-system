@@ -17,13 +17,13 @@ describe Imply do
 
   describe 'deductive_sequents_consequece' do
     subject { imply.deductive_sequents_consequece(sequent) }
-    let(:sequent) { Sequent.build('{B} |- A=>B') }
-    it { is_expected.to identify_array([Sequent.build('{A, B} |- B')]) }
+    let(:sequent) { Sequent.build('B |- A=>B') }
+    it { is_expected.to identify_array([Sequent.build('A, B |- B')]) }
   end
 
   describe 'deductive_sequents_axiom' do
     subject { imply.deductive_sequents_axiom(sequent) }
-    let(:sequent) { Sequent.build('{A=>B, C} |- A=>B') }
-    it { is_expected.to identify_array([Sequent.build('{C} |- A=>B, A'), Sequent.build('{B, C} |- A=>B')]) }
+    let(:sequent) { Sequent.build('A=>B, C |- A=>B') }
+    it { is_expected.to identify_array([Sequent.build('C |- A=>B, A'), Sequent.build('B, C |- A=>B')]) }
   end
 end

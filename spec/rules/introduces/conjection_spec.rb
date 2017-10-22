@@ -6,10 +6,10 @@ describe Rules::Introduces::Conjunction do
     context 'valid' do
       let(:deduction_data) do
         """
-          {A, B} |- A
-          {A, B} |- B
+          A, B |- A
+          A, B |- B
           ------ (∧ I)
-          {A, B} |- A ∧ B
+          A, B |- A ∧ B
         """
       end
       it { is_expected.to be true}

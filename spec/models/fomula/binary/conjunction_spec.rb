@@ -30,14 +30,14 @@ describe Conjunction do
   describe 'deductive_sequents_consequece' do
     subject { conjunction.deductive_sequents_consequece(sequent) }
     let(:conjunction) { Formula.build('A∧B') }
-    let(:sequent) { Sequent.build('{A, B} |- A∧B') }
-    it { is_expected.to identify_array([Sequent.build('{A, B} |- A'), Sequent.build('{A, B} |- B')]) }
+    let(:sequent) { Sequent.build('A, B |- A∧B') }
+    it { is_expected.to identify_array([Sequent.build('A, B |- A'), Sequent.build('A, B |- B')]) }
   end
 
   describe 'deductive_sequents_axiom' do
     subject { conjunction.deductive_sequents_axiom(sequent) }
     let(:conjunction) { Formula.build('A∧B') }
-    let(:sequent) { Sequent.build('{A∧B} |- A') }
-    it { is_expected.to identify_array([Sequent.build('{A, B} |- A')]) }
+    let(:sequent) { Sequent.build('A∧B |- A') }
+    it { is_expected.to identify_array([Sequent.build('A, B |- A')]) }
   end
 end
