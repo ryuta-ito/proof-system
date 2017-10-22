@@ -85,6 +85,8 @@ module Formulasable
     formulas.flat_map &:free_variables
   end
 
+  def find; formulas.find { |formula| yield formula }; end
+
   private
 
   def multi_set_diff(formulas_a, formulas_b)

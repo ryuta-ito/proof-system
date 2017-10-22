@@ -68,21 +68,42 @@ class Sequent
   end
 
   def obvious?
-    axiom.formulas.any? do |formula|
-      theorem.class === formula && theorem.identify?(formula)
+    axiom.formulas.any? do |formula_a|
+      consequece.formulas.any? do |formula_b|
+        formula_a.identify?(formula_b)
+      end
     end
+  end
+
+  def single_obvious?
+    [axiom.formulas.size, consequece.formulas.size] == [1, 1] &&
+      axiom.formulas.first.identify?(consequece.formulas.first)
   end
 
   def identify?(sequent)
     axiom.identify?(sequent.axiom) && consequece.identify?(sequent.consequece)
   end
 
-  def create_sequent_figure
-    SequentFigure.create_sequent_figure(self)
-  end
-
   def deductive_sequents
     return consequece.deductive_sequents(self) unless consequece.all_atom?
-    axiom.all_atom? ? [[], nil] : axiom.deductive_sequents(self)
+    return axiom.deductive_sequents(self) unless axiom.all_atom?
+    weakening
+  end
+
+  def weakening
+    return [[], nil] if !obvious? || single_obvious?
+    id_formula = axiom.find { |formula_a| consequece.find { |formula_b| formula_a.identify?(formula_b) } }
+
+    if axiom.formulas.size > 1
+      weakening_formula = axiom.find { |formula| !id_formula.identify?(formula) }
+      w_l_sequent = Sequent.new( axiom: axiom.substitute(weakening_formula, []), consequece: consequece )
+      [ [w_l_sequent], 'W L' ]
+    elsif consequece.formulas.size > 1
+      weakening_formula = consequece.find { |formula| !id_formula.identify?(formula) }
+      w_r_sequent = Sequent.new( axiom: axiom, consequece: consequece.substitute(weakening_formula, []) )
+      [ [w_r_sequent], 'W R' ]
+    else
+      [[], nil]
+    end
   end
 end

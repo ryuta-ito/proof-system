@@ -11,9 +11,13 @@ describe Sequent do
     let(:sequent) { Sequent.build('A => B |- ¬B => ¬A') }
     let(:proof_figure) do
       <<~EOS
+        A |- A
+        ------ (W R)
         A |- A, B
         ------ (¬ L)
         ¬B, A |- A
+            B |- B
+            ------ (W L)
             B, A |- B
             ------ (¬ L)
             B, ¬B, A |- 
