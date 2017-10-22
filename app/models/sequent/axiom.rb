@@ -1,15 +1,17 @@
 # axiom:
 #   {Formula_1, ..., Formula_n}
 
-class Axiom
-  attr_accessor :str, :formulas
+require 'models/formula/formulasable'
+
+class Sequent::Axiom
+  attr_accessor :formulas
 
   include ActiveModel::Model
+  include Formulasable
 
   class << self
     def build(axiom_data)
-      new( str: axiom_data,
-           formulas: Formula.multi_build(parse_axiom axiom_data) )
+      new( formulas: Formula.multi_build(parse_axiom axiom_data) )
     end
 
     private
@@ -17,6 +19,10 @@ class Axiom
     def parse_axiom(axiom_data)
       axiom_data.delete('{|}').strip
     end
+  end
+
+  def str
+    "{#{(formulas.map { |formula| ParenthesesParser.strip_edge_parentheses(formula.str) }).join(', ')}}"
   end
 
   def show
@@ -34,7 +40,7 @@ class Axiom
   end
 
   def xor_diff(axiom)
-    Axiom.new.tap do |diffed_axiom|
+    self.class.new.tap do |diffed_axiom|
       diff_a = axiom.formulas.select do |given_formula|
         formulas.all? { |self_formula| !self_formula.identify?(given_formula) }
       end
@@ -46,7 +52,7 @@ class Axiom
   end
 
   def diff(axiom)
-    Axiom.new.tap do |diffed_axiom|
+    self.class.new.tap do |diffed_axiom|
       diffed_axiom.formulas = multi_set_diff(formulas, axiom.formulas)
     end
   end
