@@ -61,6 +61,10 @@ class Formula
     end
   end
 
+  def code
+    self.class.code
+  end
+
   def show
     puts str
   end
