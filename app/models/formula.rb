@@ -64,4 +64,21 @@ class Formula
   def show
     puts str
   end
+
+  def deductive_sequents_axiom(sequent)
+    raise NotImplementedError
+  end
+
+  def deductive_sequents_axiom(sequent)
+    raise NotImplementedError
+  end
+
+  def deductive_sequents(sequent, sign)
+    case sign
+    when Sequent::Consequence
+      deductive_sequents_consequece(sequent)
+    when Sequent::Axiom
+      deductive_sequents_axiom(sequent)
+    end
+  end
 end

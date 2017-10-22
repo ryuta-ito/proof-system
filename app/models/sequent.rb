@@ -2,7 +2,7 @@
 #   <axiom> |- <theorem>
 
 class Sequent
-  attr_accessor :axiom, :theorem
+  attr_accessor :axiom, :theorem, :consequece
 
   include ActiveModel::Model
 
@@ -14,8 +14,9 @@ class Sequent
     end
 
     def build(sequent_data)
-      new( axiom: Axiom.build(parse_left sequent_data),
-           theorem: Formula.build(parse_right sequent_data) )
+      new( axiom: Sequent::Axiom.build(parse_left sequent_data),
+           theorem: Formula.build(parse_right(sequent_data).split(',').first.strip),
+           consequece: Sequent::Consequence.build(parse_right sequent_data))
     end
 
     private
@@ -38,7 +39,7 @@ class Sequent
   end
 
   def str
-    "#{axiom.str} |- #{ParenthesesParser.strip_edge_parentheses(theorem.str)}"
+    "#{axiom.str} |- #{consequece.str}"
   end
 
   def obvious?
@@ -47,7 +48,16 @@ class Sequent
     end
   end
 
+  def identify?(sequent)
+    axiom.identify?(sequent.axiom) && consequece.identify?(sequent.consequece)
+  end
+
   def create_sequent_figure
     SequentFigure.create_sequent_figure(self)
+  end
+
+  def deductive_sequents
+    return consequece.deductive_sequents(self) unless consequece.all_atom?
+    axiom.all_atom? ? [] : axiom.deductive_sequents(self)
   end
 end

@@ -46,4 +46,12 @@ class Negation < Formula
   def unify(target_formula)
     (self.class === target_formula) ? formula.unify(target_formula) : NonUnifier.build
   end
+
+  def deductive_sequents_consequece(sequent)
+    [ Sequent.new( axiom: sequent.axiom.add_formula(formula), consequece: sequent.consequece.delete_formula(self) ) ]
+  end
+
+  def deductive_sequents_axiom(sequent)
+    [ Sequent.new( axiom: sequent.axiom.delete_formula(self), consequece: sequent.consequece.add_formula(formula) ) ]
+  end
 end
