@@ -13,11 +13,14 @@ module Formulasable
   end
 
   def identify?(formulas_object)
-    formulas.all? do |formula_a|
-      formulas_object.formulas.any? do |formula_b|
-        formula_a.identify? formula_b
-      end
+    judge = -> (formulas_a, formulas_b) do
+      formulas_a.all? do |formula_a|
+        formulas_b.any? do |formula_b|
+          formula_a.identify? formula_b
+        end
+      end && !formulas_a.empty?
     end
+    judge.(formulas, formulas_object.formulas) && judge.(formulas_object.formulas, formulas)
   end
 
   def str
@@ -26,16 +29,6 @@ module Formulasable
 
   def show
     puts str
-  end
-
-  def identify?(axiom)
-    return false unless self.class === axiom
-
-    formulas.map do |formula_a|
-      axiom.formulas.map do |formula_b|
-        formula_a.identify? formula_b
-      end.any?
-    end.all?
   end
 
   def xor_diff(axiom)
