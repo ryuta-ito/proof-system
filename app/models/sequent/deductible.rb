@@ -46,8 +46,18 @@ module Deductible
     end
   end
 
-  def add_formula(formula)
-    self.class.new( formulas: formulas + [formula] )
+  def add_formula(target_formula)
+    if formulas.any? { |formula| target_formula.identify?(formula) }
+      self
+    else
+      self.class.new( formulas: formulas + [target_formula] )
+    end
+  end
+
+  def add_formulas(target_formulas)
+    target_formulas.reduce(self) do |deductible_obj, target_formula|
+      deductible_obj.add_formula target_formula
+    end
   end
 
   def delete_formula(target_formula)

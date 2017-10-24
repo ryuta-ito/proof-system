@@ -28,4 +28,32 @@ describe Existence do
     subject { existence.show }
     it { expect { subject }.to output("∃x.P(x y)\n").to_stdout }
   end
+
+  describe '#deductive_sequents_axiom' do
+    subject { existence.deductive_sequents_axiom(sequent).first }
+
+    context 'no constants' do
+      let(:sequent) { Sequent.build('∃x.P(x y) |- ∃x.P(x y)') }
+      it { is_expected.to identify(Sequent.build('P(A y) |- ∃x.P(x y)'))}
+    end
+
+    context 'exist constants' do
+      let(:sequent) { Sequent.build('∃x.P(x y) |- ∃x.P(x B)') }
+      it { is_expected.to identify(Sequent.build('P(C y) |- ∃x.P(x B)'))}
+    end
+  end
+
+  describe '#deductive_sequents_consequece' do
+    subject { existence.deductive_sequents_consequece(sequent).first }
+
+    context 'no constants' do
+      let(:sequent) { Sequent.build('∃x.P(x y) |- ∃x.P(x y)') }
+      it { is_expected.to identify(Sequent.build('∃x.P(x y) |- ∃x.P(x y), P(A y)'))}
+    end
+
+    context 'exist constants' do
+      let(:sequent) { Sequent.build('P(A B) |- ∃x.P(x y)') }
+      it { is_expected.to identify(Sequent.build('P(A B) |- ∃x.P(x y), P(A y), P(B y)'))}
+    end
+  end
 end
