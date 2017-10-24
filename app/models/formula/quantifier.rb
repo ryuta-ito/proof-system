@@ -40,6 +40,10 @@ class Formula::Quantifier < Formula
     end
   end
 
+  def constants
+    formula.constants
+  end
+
   def substitute(target, replace)
     if replace.free_variables.any? { |free_variable| free_variable.identify?(bounded_variable) }
       raise ReplaceDataBounded

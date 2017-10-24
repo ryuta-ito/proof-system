@@ -69,7 +69,11 @@ class Atom < Formula
   end
 
   def free_variables
-    arguments.flat_map { |term| term.free_variables }
+    arguments.flat_map &:free_variables
+  end
+
+  def constants
+    arguments.flat_map &:constants
   end
 
   def substitute(target, replace)

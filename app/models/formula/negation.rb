@@ -1,10 +1,15 @@
 # negation:
 #   ¬<formula>
 
+require 'forwardable'
+
 class Negation < Formula
   attr_accessor :formula
 
   include ActiveModel::Model
+
+  extend Forwardable
+  def_delegators :@formula, :free_variables, :constants
 
   class << self
     def build(negation_data)
@@ -28,10 +33,6 @@ class Negation < Formula
 
   def identify?(target_formula)
     self.class === target_formula && target_formula.formula.identify?(formula)
-  end
-
-  def free_variables
-    formula.free_variables
   end
 
   def substitute(target, replace)

@@ -17,6 +17,10 @@ class Variable < Term
     [self]
   end
 
+  def constants
+    []
+  end
+
   def substitute(target, replace)
     identify?(target) ? replace : self
   end

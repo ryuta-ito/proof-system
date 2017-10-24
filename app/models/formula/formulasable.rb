@@ -85,6 +85,10 @@ module Formulasable
     formulas.flat_map &:free_variables
   end
 
+  def constants
+    formulas.flat_map &:constants
+  end
+
   def find; formulas.find { |formula| yield formula }; end
 
   private

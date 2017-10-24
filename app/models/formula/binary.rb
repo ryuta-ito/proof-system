@@ -20,7 +20,11 @@ class Formula::Binary < Formula
   end
 
   def free_variables
-    [left, right].flat_map { |formula| formula.free_variables }
+    [left, right].flat_map &:free_variables
+  end
+
+  def constants
+    [left, right].flat_map &:constants
   end
 
   def substitute(target, replace)

@@ -84,6 +84,10 @@ class Sequent
     axiom.identify?(sequent.axiom) && consequece.identify?(sequent.consequece)
   end
 
+  def both_sides
+    [ axiom, consequece ]
+  end
+
   def deductive_sequents
     return consequece.deductive_sequents(self) unless consequece.all_atom?
     return axiom.deductive_sequents(self) unless axiom.all_atom?
@@ -105,5 +109,9 @@ class Sequent
     else
       [[], nil]
     end
+  end
+
+  def constants
+    both_sides.flat_map &:constants
   end
 end

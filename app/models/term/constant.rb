@@ -17,6 +17,10 @@ class Constant < Term
     []
   end
 
+  def constants
+    [self]
+  end
+
   def substitute(target, replace)
     identify?(target) ? replace : self
   end

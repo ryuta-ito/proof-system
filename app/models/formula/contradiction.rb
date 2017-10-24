@@ -8,6 +8,7 @@ class Contradiction < Formula
   end
 
   def free_variables; [] end
+  def constants; [] end
 
   def identify?(formula)
     self.class === formula
