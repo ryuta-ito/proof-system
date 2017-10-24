@@ -89,9 +89,31 @@ class Sequent
   end
 
   def deductive_sequents
-    return consequece.deductive_sequents(self) unless consequece.all_atom?
-    return axiom.deductive_sequents(self) unless axiom.all_atom?
-    weakening
+    return weakening if obvious?
+    return deductive_sequents_alpha if both_sides.any? { |side| side.has_alpha? }
+    return deductive_sequents_beta if both_sides.any? { |side| side.has_beta? }
+    return deductive_sequents_delta if both_sides.any? { |side| side.has_delta? }
+    deductive_sequents_gamma
+  end
+
+  def deductive_sequents_alpha
+    return axiom.deductive_sequents_alpha(self) if axiom.has_alpha?
+    consequece.deductive_sequents_alpha(self)
+  end
+
+  def deductive_sequents_beta
+    return axiom.deductive_sequents_beta(self) if axiom.has_beta?
+    consequece.deductive_sequents_beta(self)
+  end
+
+  def deductive_sequents_delta
+    return axiom.deductive_sequents_delta(self) if axiom.has_delta?
+    consequece.deductive_sequents_delta(self)
+  end
+
+  def deductive_sequents_gamma
+    compose( axiom.deductive_sequents_gamma(self),
+             consequece.deductive_sequents_gamma(self) )
   end
 
   def weakening
@@ -113,5 +135,9 @@ class Sequent
 
   def constants
     both_sides.flat_map &:constants
+  end
+
+  def non_used_constant
+    Term.build(constants.empty? ? 'A' : constants.map(&:str).sort.last.next)
   end
 end

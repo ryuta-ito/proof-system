@@ -13,17 +13,15 @@ describe Sequent do
       <<~EOS
         A |- A
         ------ (W R)
-        A |- A, B
-        ------ (¬ L)
-        ¬B, A |- A
+        A |- B, A
             B |- B
             ------ (W L)
             B, A |- B
-            ------ (¬ L)
-            B, ¬B, A |- 
         ------ (=> L)
-        A => B, ¬B, A |- 
+        A => B, A |- B
         ------ (¬ R)
+        A => B |- ¬A, B
+        ------ (¬ L)
         A => B, ¬B |- ¬A
         ------ (=> R)
         A => B |- ¬B => ¬A
