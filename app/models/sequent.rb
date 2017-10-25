@@ -14,9 +14,10 @@ class Sequent
     end
 
     def build(sequent_data)
+      consequece = Sequent::Consequence.build(parse_right sequent_data)
       new( axiom: Sequent::Axiom.build(parse_left sequent_data),
-           theorem: Formula.build(parse_right(sequent_data).split(',').first.strip),
-           consequece: Sequent::Consequence.build(parse_right sequent_data))
+           theorem: consequece.one_formula,
+           consequece: consequece )
     end
 
     private
@@ -114,6 +115,13 @@ class Sequent
   def deductive_sequents_gamma
     compose( axiom.deductive_sequents_gamma(self),
              consequece.deductive_sequents_gamma(self) )
+  end
+
+  def compose(sequents_a, sequents_b)
+    rule_name = [sequents_a.rule_name, sequents_b.rule_name].reject(&:empty?).join(', ')
+    sequents = [self.class.new( axiom: sequents_a.axiom.add_formulas(sequents_b.axiom),
+                                consequece: sequents_a.consequece.add_formulas(sequents_b.consequece) )]
+    Sequents.new sequents: sequents, rule_name: rule_name
   end
 
   def weakening

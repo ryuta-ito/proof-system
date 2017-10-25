@@ -63,6 +63,10 @@ module Formulasable
 
   def find; formulas.find { |formula| yield formula }; end
 
+  def one_formula
+    formulas.empty? ? nil : formulas.first
+  end
+
   private
 
   def multi_set_diff(formulas_a, formulas_b)
