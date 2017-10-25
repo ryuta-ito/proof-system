@@ -80,9 +80,9 @@ class Formula
   def deductive_sequents(sequent, sign)
     case sign
     when Sequent::Consequence
-      [deductive_sequents_consequece(sequent), Rules::LK.name(self, sign)]
+      Sequents.new(sequents: deductive_sequents_consequece(sequent), rule_name: Rules::LK.name(self, sign))
     when Sequent::Axiom
-      [deductive_sequents_axiom(sequent), Rules::LK.name(self, sign)]
+      Sequents.new(sequents: deductive_sequents_axiom(sequent), rule_name: Rules::LK.name(self, sign))
     end
   end
 end

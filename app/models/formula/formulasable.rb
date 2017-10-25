@@ -3,6 +3,10 @@ module Formulasable
     def build(formulas_data)
       new( formulas: Formula.multi_build(formulas_data) )
     end
+
+    def build_empty
+      new( formulas: [] )
+    end
   end
 
   extend ClassMethods

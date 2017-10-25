@@ -54,7 +54,8 @@ module Deductible
     end
   end
 
-  def add_formulas(target_formulas)
+  def add_formulas(formulasable)
+    target_formulas = Array === formulasable ? formulasable : formulasable.formulas
     target_formulas.reduce(self) do |deductible_obj, target_formula|
       deductible_obj.add_formula target_formula
     end
@@ -65,20 +66,20 @@ module Deductible
   end
 
   def deductive_sequents_alpha(sequent)
-    has_alpha? ? alpha_formula.deductive_sequents(sequent, self) : []
+    has_alpha? ? alpha_formula.deductive_sequents(sequent, self) : Sequents.build_empty
   end
 
   def deductive_sequents_beta(sequent)
-    has_beta? ? beta_formula.deductive_sequents(sequent, self) : []
+    has_beta? ? beta_formula.deductive_sequents(sequent, self) : Sequents.build_empty
   end
 
   def deductive_sequents_gamma(sequent)
     formula = formulas.find { |formula| gamma_sign === formula }
-    formula ? formula.deductive_sequents(sequent, self) : []
+    formula ? formula.deductive_sequents(sequent, self) : Sequents.build_empty
   end
 
   def deductive_sequents_delta(sequent)
     formula = formulas.find { |formula| delta_sign === formula }
-    formula ? formula.deductive_sequents(sequent, self) : []
+    formula ? formula.deductive_sequents(sequent, self) : Sequents.build_empty
   end
 end

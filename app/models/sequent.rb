@@ -43,7 +43,7 @@ class Sequent
   end
 
   def deductive_str_reverse(count = 0)
-    sequents, rule_name = deductive_sequents
+    sequents, rule_name = [deductive_sequents.sequents, deductive_sequents.rule_name]
     tab = ' ' * count
     upper_str = "#{tab}#{str}\n#{tab}------ (#{rule_name})\n"
 
@@ -117,19 +117,19 @@ class Sequent
   end
 
   def weakening
-    return [[], nil] if !obvious? || single_obvious?
+    return Sequents.build_empty if !obvious? || single_obvious?
     id_formula = axiom.find { |formula_a| consequece.find { |formula_b| formula_a.identify?(formula_b) } }
 
     if axiom.formulas.size > 1
       weakening_formula = axiom.find { |formula| !id_formula.identify?(formula) }
       w_l_sequent = Sequent.new( axiom: axiom.substitute(weakening_formula, []), consequece: consequece )
-      [ [w_l_sequent], 'W L' ]
+      Sequents.new( sequents: [w_l_sequent], rule_name: 'W L' )
     elsif consequece.formulas.size > 1
       weakening_formula = consequece.find { |formula| !id_formula.identify?(formula) }
       w_r_sequent = Sequent.new( axiom: axiom, consequece: consequece.substitute(weakening_formula, []) )
-      [ [w_r_sequent], 'W R' ]
+      Sequents.new( sequents: [w_r_sequent], rule_name: 'W R' )
     else
-      [[], nil]
+      Sequents.build_empty
     end
   end
 
