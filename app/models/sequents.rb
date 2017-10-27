@@ -7,9 +7,9 @@ class Sequents
     new sequents: [], rule_name: ''
   end
 
-  def axiom
+  def assumption
     if sequents.first
-      sequents.first.axiom
+      sequents.first.assumption
     else
       Sequent::Assumption.build_empty
     end

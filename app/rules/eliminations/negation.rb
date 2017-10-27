@@ -4,7 +4,7 @@
 # Γ |- ⊥
 
 require 'rules/eliminations'
-require 'rules/commons/axiom'
+require 'rules/commons/assumption'
 
 module Rules::Eliminations::Negation
   extend Rules::Commons::Assumption
@@ -16,6 +16,6 @@ module Rules::Eliminations::Negation
     Negation === sequent_b.theorem &&
       sequent_a.theorem.identify?(sequent_b.theorem.formula) &&
       Contradiction === sequent_c.theorem &&
-      axioms_equal?(deduction)
+      assumptions_equal?(deduction)
   end
 end

@@ -4,7 +4,7 @@
 #
 # x ∉ FV(Γ)
 
-require 'rules/commons/axiom'
+require 'rules/commons/assumption'
 
 module Rules::Eliminations::Universal
   extend Rules::Commons::Assumption
@@ -18,7 +18,7 @@ module Rules::Eliminations::Universal
 
     (Universal === sequent_a.theorem) &&
       (Unifier === unifier) &&
-      axioms_equal?(deduction) &&
+      assumptions_equal?(deduction) &&
       sequent_b.theorem.free_variables.all? { |variable| !bounded_variable.identify?(variable) }
   end
 end

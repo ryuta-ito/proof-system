@@ -5,7 +5,7 @@
 #
 # x ∉ FV(Γ, Q)
 
-require 'rules/commons/axiom'
+require 'rules/commons/assumption'
 
 module Rules::Eliminations::Existence
   extend Rules::Commons::Assumption
@@ -16,8 +16,8 @@ module Rules::Eliminations::Existence
     bounded_variable = sequent_a.theorem.bounded_variable
 
     (Existence === sequent_a.theorem) &&
-      (sequent_a.axiom.xor_diff(sequent_b.axiom).formulas.first.identify?(sequent_a.theorem.formula)) &&
+      (sequent_a.assumption.xor_diff(sequent_b.assumption).formulas.first.identify?(sequent_a.theorem.formula)) &&
       (sequent_b.theorem.identify? sequent_c.theorem) &&
-      !((sequent_a.axiom.free_variables + sequent_b.theorem.free_variables).any? {|variable| variable.identify?(bounded_variable)})
+      !((sequent_a.assumption.free_variables + sequent_b.theorem.free_variables).any? {|variable| variable.identify?(bounded_variable)})
   end
 end

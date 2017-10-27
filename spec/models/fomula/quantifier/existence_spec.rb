@@ -29,8 +29,8 @@ describe Existence do
     it { expect { subject }.to output("∃x.P(x y)\n").to_stdout }
   end
 
-  describe '#deductive_sequents_axiom' do
-    subject { existence.deductive_sequents_axiom(sequent).first }
+  describe '#deductive_sequents_assumption' do
+    subject { existence.deductive_sequents_assumption(sequent).first }
 
     context 'no constants' do
       let(:sequent) { Sequent.build('∃x.P(x y) |- ∃x.P(x y)') }

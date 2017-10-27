@@ -18,7 +18,7 @@ describe Disjunction do
   end
 
   describe 'deductive_sequents_consequece' do
-    subject { disjunction.deductive_sequents_axiom(sequent) }
+    subject { disjunction.deductive_sequents_assumption(sequent) }
     let(:sequent) { Sequent.build('A∨B |- A∨B') }
     it { is_expected.to identify_array([Sequent.build('A |- A∨B'), Sequent.build('B |- A∨B')]) }
   end

@@ -14,7 +14,7 @@ module Rules::Eliminations::Disjunction
     Disjunction === sequent_a.theorem &&
       sequent_b.theorem.identify?(sequent_c.theorem) &&
       sequent_c.theorem.identify?(sequent_d.theorem) &&
-      sequent_b.axiom.diff(sequent_a.axiom).formulas.first.identify?(sequent_a.theorem.left) &&
-      sequent_c.axiom.diff(sequent_a.axiom).formulas.first.identify?(sequent_a.theorem.right)
+      sequent_b.assumption.diff(sequent_a.assumption).formulas.first.identify?(sequent_a.theorem.left) &&
+      sequent_c.assumption.diff(sequent_a.assumption).formulas.first.identify?(sequent_a.theorem.right)
   end
 end

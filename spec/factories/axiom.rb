@@ -1,4 +1,4 @@
 FactoryGirl.define do
-  factory :axiom do
+  factory :assumption do
   end
 end

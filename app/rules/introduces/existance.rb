@@ -5,7 +5,7 @@
 # ∃θ.( P(t)θ ≡ P(x)θ )
 # θ ≡ [t/x]
 
-require 'rules/commons/axiom'
+require 'rules/commons/assumption'
 
 module Rules::Introduces::Existence
   extend Rules::Commons::Assumption
@@ -15,7 +15,7 @@ module Rules::Introduces::Existence
     theorem_b = deduction.lower_sequent.theorem
     bounded_variable = theorem_b.bounded_variable
 
-    return false unless axioms_equal?(deduction) && Existence === theorem_b
+    return false unless assumptions_equal?(deduction) && Existence === theorem_b
 
     unifier = theorem_a.unify(theorem_b.formula)
 

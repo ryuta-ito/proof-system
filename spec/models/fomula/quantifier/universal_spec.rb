@@ -1,6 +1,6 @@
 describe Universal do
-  describe '#deductive_sequents_axiom' do
-    subject { universal.deductive_sequents_axiom(sequent).first }
+  describe '#deductive_sequents_assumption' do
+    subject { universal.deductive_sequents_assumption(sequent).first }
     let(:universal) { Universal.build('∀x.P(x y)') }
 
     context 'no constants' do

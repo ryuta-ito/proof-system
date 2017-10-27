@@ -34,8 +34,8 @@ describe Conjunction do
     it { is_expected.to identify_array([Sequent.build('A, B |- A'), Sequent.build('A, B |- B')]) }
   end
 
-  describe 'deductive_sequents_axiom' do
-    subject { conjunction.deductive_sequents_axiom(sequent) }
+  describe 'deductive_sequents_assumption' do
+    subject { conjunction.deductive_sequents_assumption(sequent) }
     let(:conjunction) { Formula.build('A∧B') }
     let(:sequent) { Sequent.build('A∧B |- A') }
     it { is_expected.to identify_array([Sequent.build('A, B |- A')]) }

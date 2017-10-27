@@ -8,7 +8,7 @@ describe Negation do
   end
 
   describe 'deductive_sequents_consequece' do
-    subject { negation.deductive_sequents_axiom(sequent) }
+    subject { negation.deductive_sequents_assumption(sequent) }
     let(:sequent) { Sequent.build('¬A, B |- ¬A, B') }
     it { is_expected.to identify_array([Sequent.build('B |- ¬A, B, A')]) }
   end

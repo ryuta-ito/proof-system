@@ -21,8 +21,8 @@ describe Imply do
     it { is_expected.to identify_array([Sequent.build('A, B |- B')]) }
   end
 
-  describe 'deductive_sequents_axiom' do
-    subject { imply.deductive_sequents_axiom(sequent) }
+  describe 'deductive_sequents_assumption' do
+    subject { imply.deductive_sequents_assumption(sequent) }
     let(:sequent) { Sequent.build('A=>B, C |- A=>B') }
     it { is_expected.to identify_array([Sequent.build('C |- A=>B, A'), Sequent.build('B, C |- A=>B')]) }
   end

@@ -49,10 +49,10 @@ class Negation < Formula
   end
 
   def deductive_sequents_consequece(sequent)
-    [ Sequent.new( axiom: sequent.axiom.add_formula(formula), consequece: sequent.consequece.delete_formula(self) ) ]
+    [ Sequent.new( assumption: sequent.assumption.add_formula(formula), consequece: sequent.consequece.delete_formula(self) ) ]
   end
 
-  def deductive_sequents_axiom(sequent)
-    [ Sequent.new( axiom: sequent.axiom.delete_formula(self), consequece: sequent.consequece.add_formula(formula) ) ]
+  def deductive_sequents_assumption(sequent)
+    [ Sequent.new( assumption: sequent.assumption.delete_formula(self), consequece: sequent.consequece.add_formula(formula) ) ]
   end
 end

@@ -10,15 +10,15 @@ class Imply < Formula::Binary
   # ------
   # Γ, A |- Δ, B
   def deductive_sequents_consequece(sequent)
-    [ Sequent.new( axiom: sequent.axiom.add_formula(left), consequece: sequent.consequece.substitute(self, [right]) ) ]
+    [ Sequent.new( assumption: sequent.assumption.add_formula(left), consequece: sequent.consequece.substitute(self, [right]) ) ]
   end
 
   # Γ, A => B |- Δ
   # ------
   # Γ |- Δ, A
   # Γ, B |- Δ
-  def deductive_sequents_axiom(sequent)
-    [ Sequent.new( axiom: sequent.axiom.delete_formula(self), consequece: sequent.consequece.add_formula(left) ),
-      Sequent.new( axiom: sequent.axiom.substitute(self, right), consequece: sequent.consequece ) ]
+  def deductive_sequents_assumption(sequent)
+    [ Sequent.new( assumption: sequent.assumption.delete_formula(self), consequece: sequent.consequece.add_formula(left) ),
+      Sequent.new( assumption: sequent.assumption.substitute(self, right), consequece: sequent.consequece ) ]
   end
 end

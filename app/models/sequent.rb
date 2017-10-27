@@ -1,8 +1,8 @@
 # sequent:
-#   <axiom> |- <theorem>
+#   <assumption> |- <theorem>
 
 class Sequent
-  attr_accessor :axiom, :theorem, :consequece
+  attr_accessor :assumption, :theorem, :consequece
 
   include ActiveModel::Model
 
@@ -15,7 +15,7 @@ class Sequent
 
     def build(sequent_data)
       consequece = Sequent::Consequence.build(parse_right sequent_data)
-      new( axiom: Sequent::Assumption.build(parse_left sequent_data),
+      new( assumption: Sequent::Assumption.build(parse_left sequent_data),
            theorem: consequece.one_formula,
            consequece: consequece )
     end
@@ -40,7 +40,7 @@ class Sequent
   end
 
   def str
-    "#{axiom.str} |- #{consequece.str}"
+    "#{assumption.str} |- #{consequece.str}"
   end
 
   def deductive_str_reverse(count = 0)
@@ -69,7 +69,7 @@ class Sequent
   end
 
   def obvious?
-    axiom.formulas.any? do |formula_a|
+    assumption.formulas.any? do |formula_a|
       consequece.formulas.any? do |formula_b|
         formula_a.identify?(formula_b)
       end
@@ -77,16 +77,16 @@ class Sequent
   end
 
   def single_obvious?
-    [axiom.formulas.size, consequece.formulas.size] == [1, 1] &&
-      axiom.formulas.first.identify?(consequece.formulas.first)
+    [assumption.formulas.size, consequece.formulas.size] == [1, 1] &&
+      assumption.formulas.first.identify?(consequece.formulas.first)
   end
 
   def identify?(sequent)
-    axiom.identify?(sequent.axiom) && consequece.identify?(sequent.consequece)
+    assumption.identify?(sequent.assumption) && consequece.identify?(sequent.consequece)
   end
 
   def both_sides
-    [ axiom, consequece ]
+    [ assumption, consequece ]
   end
 
   def deductive_sequents
@@ -98,43 +98,43 @@ class Sequent
   end
 
   def deductive_sequents_alpha
-    return axiom.deductive_sequents_alpha(self) if axiom.has_alpha?
+    return assumption.deductive_sequents_alpha(self) if assumption.has_alpha?
     consequece.deductive_sequents_alpha(self)
   end
 
   def deductive_sequents_beta
-    return axiom.deductive_sequents_beta(self) if axiom.has_beta?
+    return assumption.deductive_sequents_beta(self) if assumption.has_beta?
     consequece.deductive_sequents_beta(self)
   end
 
   def deductive_sequents_delta
-    return axiom.deductive_sequents_delta(self) if axiom.has_delta?
+    return assumption.deductive_sequents_delta(self) if assumption.has_delta?
     consequece.deductive_sequents_delta(self)
   end
 
   def deductive_sequents_gamma
-    compose( axiom.deductive_sequents_gamma(self),
+    compose( assumption.deductive_sequents_gamma(self),
              consequece.deductive_sequents_gamma(self) )
   end
 
   def compose(sequents_a, sequents_b)
     rule_name = [sequents_a.rule_name, sequents_b.rule_name].reject(&:empty?).join(', ')
-    sequents = [self.class.new( axiom: sequents_a.axiom.add_formulas(sequents_b.axiom),
+    sequents = [self.class.new( assumption: sequents_a.assumption.add_formulas(sequents_b.assumption),
                                 consequece: sequents_a.consequece.add_formulas(sequents_b.consequece) )]
     Sequents.new sequents: sequents, rule_name: rule_name
   end
 
   def weakening
     return Sequents.build_empty if !obvious? || single_obvious?
-    id_formula = axiom.find { |formula_a| consequece.find { |formula_b| formula_a.identify?(formula_b) } }
+    id_formula = assumption.find { |formula_a| consequece.find { |formula_b| formula_a.identify?(formula_b) } }
 
-    if axiom.formulas.size > 1
-      weakening_formula = axiom.find { |formula| !id_formula.identify?(formula) }
-      w_l_sequent = Sequent.new( axiom: axiom.substitute(weakening_formula, []), consequece: consequece )
+    if assumption.formulas.size > 1
+      weakening_formula = assumption.find { |formula| !id_formula.identify?(formula) }
+      w_l_sequent = Sequent.new( assumption: assumption.substitute(weakening_formula, []), consequece: consequece )
       Sequents.new( sequents: [w_l_sequent], rule_name: 'W L' )
     elsif consequece.formulas.size > 1
       weakening_formula = consequece.find { |formula| !id_formula.identify?(formula) }
-      w_r_sequent = Sequent.new( axiom: axiom, consequece: consequece.substitute(weakening_formula, []) )
+      w_r_sequent = Sequent.new( assumption: assumption, consequece: consequece.substitute(weakening_formula, []) )
       Sequents.new( sequents: [w_r_sequent], rule_name: 'W R' )
     else
       Sequents.build_empty

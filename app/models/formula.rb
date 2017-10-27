@@ -69,11 +69,11 @@ class Formula
     puts str
   end
 
-  def deductive_sequents_axiom(sequent)
+  def deductive_sequents_assumption(sequent)
     raise NotImplementedError
   end
 
-  def deductive_sequents_axiom(sequent)
+  def deductive_sequents_assumption(sequent)
     raise NotImplementedError
   end
 
@@ -82,7 +82,7 @@ class Formula
     when Sequent::Consequence
       Sequents.new(sequents: deductive_sequents_consequece(sequent), rule_name: Rules::LK.name(self, sign))
     when Sequent::Assumption
-      Sequents.new(sequents: deductive_sequents_axiom(sequent), rule_name: Rules::LK.name(self, sign))
+      Sequents.new(sequents: deductive_sequents_assumption(sequent), rule_name: Rules::LK.name(self, sign))
     end
   end
 end

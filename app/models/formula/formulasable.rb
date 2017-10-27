@@ -35,21 +35,21 @@ module Formulasable
     puts str
   end
 
-  def xor_diff(axiom)
-    self.class.new.tap do |diffed_axiom|
-      diff_a = axiom.formulas.select do |given_formula|
+  def xor_diff(assumption)
+    self.class.new.tap do |diffed_assumption|
+      diff_a = assumption.formulas.select do |given_formula|
         formulas.all? { |self_formula| !self_formula.identify?(given_formula) }
       end
       diff_b = formulas.select do |self_formula|
-        axiom.formulas.all? { |given_formula| !given_formula.identify?(self_formula) }
+        assumption.formulas.all? { |given_formula| !given_formula.identify?(self_formula) }
       end
-      diffed_axiom.formulas = diff_a + diff_b
+      diffed_assumption.formulas = diff_a + diff_b
     end
   end
 
-  def diff(axiom)
-    self.class.new.tap do |diffed_axiom|
-      diffed_axiom.formulas = multi_set_diff(formulas, axiom.formulas)
+  def diff(assumption)
+    self.class.new.tap do |diffed_assumption|
+      diffed_assumption.formulas = multi_set_diff(formulas, assumption.formulas)
     end
   end
 

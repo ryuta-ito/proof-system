@@ -6,7 +6,7 @@
 # ------ (∨ I)
 # Γ |- P ∨ Q. --> sequent_b
 
-require 'rules/commons/axiom'
+require 'rules/commons/assumption'
 
 module Rules::Introduces::Disjunction
   extend Rules::Commons::Assumption
@@ -15,7 +15,7 @@ module Rules::Introduces::Disjunction
     sequent_a = deduction.upper_sequents.first
     sequent_b = deduction.lower_sequent
 
-    axioms_equal?(deduction) &&
+    assumptions_equal?(deduction) &&
       Disjunction === sequent_b.theorem &&
       ( sequent_b.theorem.left.identify?(sequent_a.theorem) ||
         sequent_b.theorem.right.identify?(sequent_a.theorem) )

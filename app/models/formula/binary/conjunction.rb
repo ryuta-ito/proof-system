@@ -7,11 +7,11 @@ class Conjunction < Formula::Binary
   end
 
   def deductive_sequents_consequece(sequent)
-    [ Sequent.new( axiom: sequent.axiom, consequece: sequent.consequece.substitute(self, left) ),
-      Sequent.new( axiom: sequent.axiom, consequece: sequent.consequece.substitute(self, right) ) ]
+    [ Sequent.new( assumption: sequent.assumption, consequece: sequent.consequece.substitute(self, left) ),
+      Sequent.new( assumption: sequent.assumption, consequece: sequent.consequece.substitute(self, right) ) ]
   end
 
-  def deductive_sequents_axiom(sequent)
-    [ Sequent.new( axiom: sequent.axiom.substitute(self, [left, right]), consequece: sequent.consequece ) ]
+  def deductive_sequents_assumption(sequent)
+    [ Sequent.new( assumption: sequent.assumption.substitute(self, [left, right]), consequece: sequent.consequece ) ]
   end
 end

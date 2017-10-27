@@ -11,6 +11,6 @@ module Rules::Introduces::Negation
 
     Contradiction === sequent_a.theorem &&
       Negation === sequent_b.theorem &&
-      sequent_b.theorem.formula.identify?(sequent_a.axiom.diff(sequent_b.axiom).formulas.first)
+      sequent_b.theorem.formula.identify?(sequent_a.assumption.diff(sequent_b.assumption).formulas.first)
   end
 end
