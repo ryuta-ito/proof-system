@@ -1,6 +1,6 @@
 require 'rules/commons'
 
-module Rules::Commons::Axiom
+module Rules::Commons::Assumption
   def axioms_equal?(deduction)
     deduction.all_sequents.map do |sequent|
       sequent.axiom

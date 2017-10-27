@@ -10,7 +10,7 @@ require 'rules/eliminations'
 require 'rules/commons/axiom'
 
 module Rules::Eliminations::Conjunction
-  extend Rules::Commons::Axiom
+  extend Rules::Commons::Assumption
 
   def self.satisfy?(deduction)
     sequent_a = deduction.upper_sequents.first

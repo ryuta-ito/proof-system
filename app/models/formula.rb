@@ -81,7 +81,7 @@ class Formula
     case sign
     when Sequent::Consequence
       Sequents.new(sequents: deductive_sequents_consequece(sequent), rule_name: Rules::LK.name(self, sign))
-    when Sequent::Axiom
+    when Sequent::Assumption
       Sequents.new(sequents: deductive_sequents_axiom(sequent), rule_name: Rules::LK.name(self, sign))
     end
   end

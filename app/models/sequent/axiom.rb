@@ -3,7 +3,7 @@
 
 require 'models/sequent/deductible'
 
-class Sequent::Axiom
+class Sequent::Assumption
   attr_accessor :formulas
   include Deductible
 

@@ -7,7 +7,7 @@ require 'rules/eliminations'
 require 'rules/commons/axiom'
 
 module Rules::Eliminations::Negation
-  extend Rules::Commons::Axiom
+  extend Rules::Commons::Assumption
 
   def self.satisfy?(deduction)
     sequent_a, sequent_b = deduction.upper_sequents

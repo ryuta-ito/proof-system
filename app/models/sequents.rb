@@ -11,7 +11,7 @@ class Sequents
     if sequents.first
       sequents.first.axiom
     else
-      Sequent::Axiom.build_empty
+      Sequent::Assumption.build_empty
     end
   end
 

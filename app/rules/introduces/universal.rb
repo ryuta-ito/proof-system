@@ -7,7 +7,7 @@
 require 'rules/commons/axiom'
 
 module Rules::Introduces::Universal
-  extend Rules::Commons::Axiom
+  extend Rules::Commons::Assumption
 
   def self.satisfy?(deduction)
     sequent_a, _ = deduction.upper_sequents

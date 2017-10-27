@@ -6,7 +6,7 @@
 require 'rules/eliminations'
 
 module Rules::Eliminations::Imply
-  extend Rules::Commons::Axiom
+  extend Rules::Commons::Assumption
 
   def self.satisfy?(deduction)
     sequent_a, sequent_b = deduction.upper_sequents

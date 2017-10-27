@@ -15,7 +15,7 @@ class Sequent
 
     def build(sequent_data)
       consequece = Sequent::Consequence.build(parse_right sequent_data)
-      new( axiom: Sequent::Axiom.build(parse_left sequent_data),
+      new( axiom: Sequent::Assumption.build(parse_left sequent_data),
            theorem: consequece.one_formula,
            consequece: consequece )
     end

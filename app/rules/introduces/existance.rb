@@ -8,7 +8,7 @@
 require 'rules/commons/axiom'
 
 module Rules::Introduces::Existence
-  extend Rules::Commons::Axiom
+  extend Rules::Commons::Assumption
 
   def self.satisfy?(deduction)
     theorem_a = deduction.upper_sequents.first.theorem

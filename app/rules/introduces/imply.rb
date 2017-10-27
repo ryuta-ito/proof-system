@@ -6,7 +6,7 @@ require 'rules/introduces'
 require 'rules/commons/axiom'
 
 module Rules::Introduces::Imply
-  extend Rules::Commons::Axiom
+  extend Rules::Commons::Assumption
 
   def self.satisfy?(deduction)
     sequent_a = deduction.upper_sequents.first
