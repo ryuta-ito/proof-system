@@ -16,7 +16,7 @@ class Sequent::Consequence
   end
 
   def beta_signs
-    [Consequence]
+    [Sequent::Consequence]
   end
 
   def gamma_sign
