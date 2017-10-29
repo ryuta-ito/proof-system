@@ -15,8 +15,8 @@ describe Imply do
     end
   end
 
-  describe 'deductive_sequents_consequece' do
-    subject { imply.deductive_sequents_consequece(sequent) }
+  describe 'deductive_sequents_consequence' do
+    subject { imply.deductive_sequents_consequence(sequent) }
     let(:sequent) { Sequent.build('B |- A=>B') }
     it { is_expected.to identify_array([Sequent.build('A, B |- B')]) }
   end

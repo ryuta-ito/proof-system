@@ -1,4 +1,4 @@
-# consequece:
+# consequence:
 #   Formula_1, ..., Formula_n
 
 require 'models/sequent/deductible'

@@ -2,7 +2,7 @@
 #   <assumption> |- <theorem>
 
 class Sequent
-  attr_accessor :assumption, :theorem, :consequece
+  attr_accessor :assumption, :theorem, :consequence
 
   include ActiveModel::Model
 
@@ -14,10 +14,10 @@ class Sequent
     end
 
     def build(sequent_data)
-      consequece = Sequent::Consequence.build(parse_right sequent_data)
+      consequence = Sequent::Consequence.build(parse_right sequent_data)
       new( assumption: Sequent::Assumption.build(parse_left sequent_data),
-           theorem: consequece.one_formula,
-           consequece: consequece )
+           theorem: consequence.one_formula,
+           consequence: consequence )
     end
 
     private
@@ -40,7 +40,7 @@ class Sequent
   end
 
   def str
-    "#{assumption.str} |- #{consequece.str}"
+    "#{assumption.str} |- #{consequence.str}"
   end
 
   def deductive_str_reverse(count = 0)
@@ -70,23 +70,23 @@ class Sequent
 
   def obvious?
     assumption.formulas.any? do |formula_a|
-      consequece.formulas.any? do |formula_b|
+      consequence.formulas.any? do |formula_b|
         formula_a.identify?(formula_b)
       end
     end
   end
 
   def single_obvious?
-    [assumption.formulas.size, consequece.formulas.size] == [1, 1] &&
-      assumption.formulas.first.identify?(consequece.formulas.first)
+    [assumption.formulas.size, consequence.formulas.size] == [1, 1] &&
+      assumption.formulas.first.identify?(consequence.formulas.first)
   end
 
   def identify?(sequent)
-    assumption.identify?(sequent.assumption) && consequece.identify?(sequent.consequece)
+    assumption.identify?(sequent.assumption) && consequence.identify?(sequent.consequence)
   end
 
   def both_sides
-    [ assumption, consequece ]
+    [ assumption, consequence ]
   end
 
   def deductive_sequents
@@ -99,42 +99,42 @@ class Sequent
 
   def deductive_sequents_alpha
     return assumption.deductive_sequents_alpha(self) if assumption.has_alpha?
-    consequece.deductive_sequents_alpha(self)
+    consequence.deductive_sequents_alpha(self)
   end
 
   def deductive_sequents_beta
     return assumption.deductive_sequents_beta(self) if assumption.has_beta?
-    consequece.deductive_sequents_beta(self)
+    consequence.deductive_sequents_beta(self)
   end
 
   def deductive_sequents_delta
     return assumption.deductive_sequents_delta(self) if assumption.has_delta?
-    consequece.deductive_sequents_delta(self)
+    consequence.deductive_sequents_delta(self)
   end
 
   def deductive_sequents_gamma
     compose( assumption.deductive_sequents_gamma(self),
-             consequece.deductive_sequents_gamma(self) )
+             consequence.deductive_sequents_gamma(self) )
   end
 
   def compose(sequents_a, sequents_b)
     rule_name = [sequents_a.rule_name, sequents_b.rule_name].reject(&:empty?).join(', ')
     sequents = [self.class.new( assumption: sequents_a.assumption.add_formulas(sequents_b.assumption),
-                                consequece: sequents_a.consequece.add_formulas(sequents_b.consequece) )]
+                                consequence: sequents_a.consequence.add_formulas(sequents_b.consequence) )]
     Sequents.new sequents: sequents, rule_name: rule_name
   end
 
   def weakening
     return Sequents.build_empty if !obvious? || single_obvious?
-    id_formula = assumption.find { |formula_a| consequece.find { |formula_b| formula_a.identify?(formula_b) } }
+    id_formula = assumption.find { |formula_a| consequence.find { |formula_b| formula_a.identify?(formula_b) } }
 
     if assumption.formulas.size > 1
       weakening_formula = assumption.find { |formula| !id_formula.identify?(formula) }
-      w_l_sequent = Sequent.new( assumption: assumption.substitute(weakening_formula, []), consequece: consequece )
+      w_l_sequent = Sequent.new( assumption: assumption.substitute(weakening_formula, []), consequence: consequence )
       Sequents.new( sequents: [w_l_sequent], rule_name: 'W L' )
-    elsif consequece.formulas.size > 1
-      weakening_formula = consequece.find { |formula| !id_formula.identify?(formula) }
-      w_r_sequent = Sequent.new( assumption: assumption, consequece: consequece.substitute(weakening_formula, []) )
+    elsif consequence.formulas.size > 1
+      weakening_formula = consequence.find { |formula| !id_formula.identify?(formula) }
+      w_r_sequent = Sequent.new( assumption: assumption, consequence: consequence.substitute(weakening_formula, []) )
       Sequents.new( sequents: [w_r_sequent], rule_name: 'W R' )
     else
       Sequents.build_empty

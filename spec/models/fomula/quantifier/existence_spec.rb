@@ -43,8 +43,8 @@ describe Existence do
     end
   end
 
-  describe '#deductive_sequents_consequece' do
-    subject { existence.deductive_sequents_consequece(sequent).first }
+  describe '#deductive_sequents_consequence' do
+    subject { existence.deductive_sequents_consequence(sequent).first }
 
     context 'no constants' do
       let(:sequent) { Sequent.build('∃x.P(x y) |- ∃x.P(x y)') }

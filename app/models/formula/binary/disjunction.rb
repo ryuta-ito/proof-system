@@ -6,12 +6,12 @@ class Disjunction < Formula::Binary
     '∨'
   end
 
-  def deductive_sequents_consequece(sequent)
-    [ Sequent.new( assumption: sequent.assumption, consequece: sequent.consequece.substitute(self, [left, right]) ) ]
+  def deductive_sequents_consequence(sequent)
+    [ Sequent.new( assumption: sequent.assumption, consequence: sequent.consequence.substitute(self, [left, right]) ) ]
   end
 
   def deductive_sequents_assumption(sequent)
-    [ Sequent.new( assumption: sequent.assumption.substitute(self, left), consequece: sequent.consequece ),
-      Sequent.new( assumption: sequent.assumption.substitute(self, right), consequece: sequent.consequece ) ]
+    [ Sequent.new( assumption: sequent.assumption.substitute(self, left), consequence: sequent.consequence ),
+      Sequent.new( assumption: sequent.assumption.substitute(self, right), consequence: sequent.consequence ) ]
   end
 end

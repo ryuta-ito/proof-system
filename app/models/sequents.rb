@@ -15,9 +15,9 @@ class Sequents
     end
   end
 
-  def consequece
+  def consequence
     if sequents.first
-      sequents.first.consequece
+      sequents.first.consequence
     else
       Sequent::Consequence.build_empty
     end

@@ -27,8 +27,8 @@ describe Conjunction do
     it { expect { subject }.to output("(P(x) ∧ A)\n").to_stdout }
   end
 
-  describe 'deductive_sequents_consequece' do
-    subject { conjunction.deductive_sequents_consequece(sequent) }
+  describe 'deductive_sequents_consequence' do
+    subject { conjunction.deductive_sequents_consequence(sequent) }
     let(:conjunction) { Formula.build('A∧B') }
     let(:sequent) { Sequent.build('A, B |- A∧B') }
     it { is_expected.to identify_array([Sequent.build('A, B |- A'), Sequent.build('A, B |- B')]) }

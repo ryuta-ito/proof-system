@@ -14,8 +14,8 @@ describe Universal do
     end
   end
 
-  describe '#deductive_sequents_consequece' do
-    subject { universal.deductive_sequents_consequece(sequent).first }
+  describe '#deductive_sequents_consequence' do
+    subject { universal.deductive_sequents_consequence(sequent).first }
     let(:universal) { Universal.build('∀x.P(x y)') }
 
     context 'no constants' do

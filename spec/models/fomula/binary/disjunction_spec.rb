@@ -11,13 +11,13 @@ describe Disjunction do
     end
   end
 
-  describe 'deductive_sequents_consequece' do
-    subject { disjunction.deductive_sequents_consequece(sequent) }
+  describe 'deductive_sequents_consequence' do
+    subject { disjunction.deductive_sequents_consequence(sequent) }
     let(:sequent) { Sequent.build('A |- A∨B') }
     it { is_expected.to identify_array([Sequent.build('A |- A, B')]) }
   end
 
-  describe 'deductive_sequents_consequece' do
+  describe 'deductive_sequents_consequence' do
     subject { disjunction.deductive_sequents_assumption(sequent) }
     let(:sequent) { Sequent.build('A∨B |- A∨B') }
     it { is_expected.to identify_array([Sequent.build('A |- A∨B'), Sequent.build('B |- A∨B')]) }
