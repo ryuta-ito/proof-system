@@ -10,7 +10,7 @@ class FileConnector
       path = if _path.start_with?('./')
                _path
              else
-               File.join(NdProving.file_base, _path)
+               File.join(ProofSystem.file_base, _path)
              end
       (File.read path).chomp
     end

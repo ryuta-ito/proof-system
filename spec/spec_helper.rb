@@ -22,7 +22,7 @@ SimpleCov.start do
 end
 
 require 'factory_girl'
-require_relative '../config/nd_proving.rb'
+require_relative '../config/proof_system.rb'
 
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
@@ -110,4 +110,4 @@ RSpec.configure do |config|
 =end
 end
 
-Dir[NdProving.root('spec/support/**/*.rb')].each { |f| require f }
+Dir[ProofSystem.root('spec/support/**/*.rb')].each { |f| require f }

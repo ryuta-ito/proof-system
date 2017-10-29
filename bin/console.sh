@@ -1,3 +1,3 @@
 #!/bin/sh
 
-pry -r ./config/nd_proving.rb
+pry -r ./config/proof_system.rb
