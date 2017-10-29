@@ -22,4 +22,8 @@ shared_context 'default lets' do
       let("substitution_#{c}_#{var}".to_sym) { Substitutions::Substitution.new(Constant.build(c), Variable.build(var)) }
     end
   end
+
+  %w[A B].each do |name|
+    let("atom_#{name}".to_sym) { Formula.build(name) }
+  end
 end

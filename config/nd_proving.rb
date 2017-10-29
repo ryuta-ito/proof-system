@@ -1,4 +1,5 @@
 require 'active_model'
+require 'forwardable'
 require 'yaml'
 require 'pry'
 

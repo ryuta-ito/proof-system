@@ -21,4 +21,12 @@ class Imply < Formula::Binary
     [ Sequent.new( assumption: sequent.assumption.delete_formula(self), consequence: sequent.consequence.add_formula(left) ),
       Sequent.new( assumption: sequent.assumption.substitute(self, right), consequence: sequent.consequence ) ]
   end
+
+  def expantion_tableux_consequence
+    Tableaux::Series.new( tableaux: [ Tableau::Assumption.new( formula: left ), Tableau::Consequence.new( formula: right ) ])
+  end
+
+  def expantion_tableux_assumption
+    Tableaux::Parallel.new( tableaux: [ Tableau::Consequence.new( formula: left ), Tableau::Assumption.new( formula: right ) ])
+  end
 end

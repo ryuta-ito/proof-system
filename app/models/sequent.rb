@@ -152,4 +152,9 @@ class Sequent
   def non_used_constant
     Term.build(constants.empty? ? 'A' : constants.map(&:str).sort.last.next)
   end
+
+  def tableaux
+    assumption.formulas.map { |formula| Tableau::Assumption.new( formula: formula ) } +
+      consequence.formulas.map { |formula| Tableau::Consequence.new( formula: formula ) }
+  end
 end
