@@ -32,6 +32,25 @@ describe Sequent do
       it { expect { subject }.to output(proof_figure).to_stdout }
     end
 
+    context 'proposition example (invalid)' do
+      let(:sequent) { Sequent.build('A ∨ B |- A ∧ B') }
+      let(:proof_figure) do
+        <<~EOS
+          A |- A
+              A |- B
+          ------ (∧ R)
+          A |- A ∧ B
+              B |- A
+                  B |- B
+              ------ (∧ R)
+              B |- A ∧ B
+          ------ (∨ L)
+          A ∨ B |- A ∧ B
+        EOS
+      end
+      it { expect { subject }.to output(proof_figure).to_stdout }
+    end
+
     context 'universal quantifier example' do
       let(:sequent) { Sequent.build('∀x.P(x) ∨ Q |- ∀y.(P(y) ∨ Q)') }
       let(:proof_figure) do

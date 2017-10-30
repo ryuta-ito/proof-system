@@ -97,7 +97,8 @@ class Sequent
     return deductive_sequents_alpha if both_sides.any? { |side| side.has_alpha? }
     return deductive_sequents_beta if both_sides.any? { |side| side.has_beta? }
     return deductive_sequents_delta if both_sides.any? { |side| side.has_delta? }
-    deductive_sequents_gamma
+    return deductive_sequents_gamma if both_sides.any? { |side| side.has_gamma? }
+    Sequents.build_empty
   end
 
   def deductive_sequents_alpha
