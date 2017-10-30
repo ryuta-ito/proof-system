@@ -23,7 +23,18 @@ shared_context 'default lets' do
     end
   end
 
-  %w[A B].each do |name|
+  %w[A B P Q].each do |name|
     let("atom_#{name}".to_sym) { Formula.build(name) }
+
+    %w[x A B].each do |var|
+      let("predicate_#{name}_#{var}".to_sym) { Formula.build("#{name}(#{var})") }
+    end
+  end
+
+  %w[x].each do |var|
+    %w[P].each do |predicate|
+      let("existence_#{var}_#{predicate}_#{var}".to_sym) { Formula.build("∃#{var}.#{predicate}(#{var})") }
+      let("universal_#{var}_#{predicate}_#{var}".to_sym) { Formula.build("∀#{var}.#{predicate}(#{var})") }
+    end
   end
 end

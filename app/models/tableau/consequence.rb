@@ -1,7 +1,9 @@
 class Tableau
   class Consequence < Tableau
-    def expantion_tableux
-      formula.expantion_tableux_consequence
+    include Sign::Consequence
+
+    def expantion_tableux(*tableau)
+      formula.expantion_tableux_consequence(*tableau)
     end
 
     def str

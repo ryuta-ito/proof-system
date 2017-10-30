@@ -1,10 +1,13 @@
 # sequent:
 #   <assumption> |- <theorem>
 
+require 'models/term/util'
+
 class Sequent
   attr_accessor :assumption, :theorem, :consequence
 
   include ActiveModel::Model
+  include Term::Util
 
   class << self
     def multi_build(upper_sequents_data)
@@ -143,14 +146,6 @@ class Sequent
 
   def constants
     both_sides.flat_map &:constants
-  end
-
-  def least_constants
-    constants.empty? ? [non_used_constant] : constants
-  end
-
-  def non_used_constant
-    Term.build(constants.empty? ? 'A' : constants.map(&:str).sort.last.next)
   end
 
   def tableaux

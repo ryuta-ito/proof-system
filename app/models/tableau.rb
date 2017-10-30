@@ -1,25 +1,54 @@
+require 'models/term/util'
+
 class Tableau
   attr_accessor :formula, :parent, :children
 
   include ActiveModel::Model
+  include Term::Util
 
   class << self
     def expantion_build_by_sequent(sequent)
       series = Tableaux::Series.new( tableaux: sequent.tableaux )
       series.init
-      iterative_expantion series.first
+      iterative_expantion series.first.all
       series.first
     end
 
-    def iterative_expantion(tableau)
-      tableau.expantion unless tableau.expantioned?
-      tableau.children.each { |child| iterative_expantion child }
+    def iterative_expantion(all_tableaux)
+      target_tableaux = non_expantion_tableaux(all_tableaux)
+
+      unless target_tableaux.empty?
+        target_tableaux.each { |tableau| tableau.expantion }
+        iterative_expantion target_tableaux.first.root.all
+      end
     end
+
+    def non_expantion_tableaux(all_tableaux)
+      %i(alpha_signs beta_signs delta_sign).each do |method|
+        tableaux = all_tableaux.reject(&:expantioned?).select do |tableau|
+          [tableau.send(method)].flatten.any? { |sign| sign === tableau.formula }
+        end
+        return tableaux unless tableaux.empty?
+      end
+      all_tableaux.select { |tableau| tableau.gamma_sign === tableau }
+    end
+  end
+
+  def all
+    [self] + children.flat_map { |child| child.all }
+  end
+
+  def root
+    parent ? parent.root : self
   end
 
   def expantion
     @expantioned = true
-    leafs.each { |leaf| expantion_tableux.set_parent(leaf) }
+    if Formula::Quantifier === formula
+      leafs.each { |leaf| expantion_tableux(self).set_parent(leaf) }
+    else
+      leafs.each { |leaf| expantion_tableux.set_parent(leaf) }
+    end
     self
   end
 
@@ -32,6 +61,7 @@ class Tableau
   end
 
   def expantioned?
+    return false if gamma_sign === formula
     (Atom === formula) || @expantioned
   end
 
@@ -47,5 +77,17 @@ class Tableau
 
   def identify?(tableau)
     formula.identify? tableau.formula
+  end
+
+  def constants
+    formula.constants + parent_constants + children_constants
+  end
+
+  def parent_constants
+    parent ? parent.formula.constants + parent.parent_constants : []
+  end
+
+  def children_constants
+    children.empty? ? [] : children.flat_map { |child| child.formula.constants + child.children_constants }
   end
 end

@@ -4,6 +4,13 @@ describe Tableau do
   describe '#expantion' do
     subject { tableau.expantion }
 
+    shared_context 'set parent tableau' do |parent_tableau|
+      before do
+        tableau.parent = parent_tableau
+        parent_tableau.children = [tableau]
+      end
+    end
+
     context 'assumption' do
       let(:tableau) { Tableau::Assumption.new( formula: formula ) }
 
@@ -30,6 +37,40 @@ describe Tableau do
       context 'negation' do
         let(:formula) { Negation.new( formula: atom_A) }
         it { expect(subject.children).to identify_array([ Tableau::Consequence.new( formula: atom_A ) ]) }
+      end
+
+      context 'quantifier' do
+        context 'existence' do
+          context 'no constants' do
+            let(:formula) { existence_x_P_x }
+            it { expect(subject.children).to identify_array([ Tableau::Assumption.new( formula: predicate_P_A ) ]) }
+          end
+
+          context 'constants exist' do
+            let(:formula) { existence_x_P_x }
+            include_context 'set parent tableau', Tableau::Assumption.new( formula: Formula.build('P(A)') )
+
+            it do
+              expect(subject.children).to identify_array([ Tableau::Assumption.new( formula: predicate_P_B ) ])
+            end
+          end
+        end
+
+        context 'universal' do
+          context 'no constants' do
+            let(:formula) { universal_x_P_x }
+            it { expect(subject.children).to identify_array([ Tableau::Assumption.new( formula: predicate_P_A ) ]) }
+          end
+
+          context 'constants exist' do
+            let(:formula) { universal_x_P_x }
+            include_context 'set parent tableau', Tableau::Assumption.new( formula: Formula.build('P(A)') )
+
+            it do
+              expect(subject.children).to identify_array([ Tableau::Assumption.new( formula: predicate_P_A ) ])
+            end
+          end
+        end
       end
     end
 
@@ -60,6 +101,40 @@ describe Tableau do
         let(:formula) { Negation.new( formula: atom_A) }
         it { expect(subject.children).to identify_array([ Tableau::Assumption.new( formula: atom_A ) ]) }
       end
+
+      context 'quantifier' do
+        context 'existence' do
+          context 'no constants' do
+            let(:formula) { existence_x_P_x }
+            it { expect(subject.children).to identify_array([ Tableau::Consequence.new( formula: predicate_P_A ) ]) }
+          end
+
+          context 'constants exist' do
+            let(:formula) { existence_x_P_x }
+            include_context 'set parent tableau', Tableau::Consequence.new( formula: Formula.build('P(A)') )
+
+            it do
+              expect(subject.children).to identify_array([ Tableau::Consequence.new( formula: predicate_P_A ) ])
+            end
+          end
+        end
+
+        context 'universal' do
+          context 'no constants' do
+            let(:formula) { universal_x_P_x }
+            it { expect(subject.children).to identify_array([ Tableau::Consequence.new( formula: predicate_P_A ) ]) }
+          end
+
+          context 'constants exist' do
+            let(:formula) { universal_x_P_x }
+            include_context 'set parent tableau', Tableau::Assumption.new( formula: Formula.build('P(A)') )
+
+            it do
+              expect(subject.children).to identify_array([ Tableau::Assumption.new( formula: predicate_P_B ) ])
+            end
+          end
+        end
+      end
     end
   end
 
@@ -72,16 +147,12 @@ describe Tableau do
         <<~EOS
           A => B
           > (¬B => ¬A)
-            B
-            ¬B
-            > ¬A
-            > B
-            A
-          > A
           ¬B
           > ¬A
           > B
           A
+            B
+          > A
         EOS
       end
       it { expect { subject }.to output(tableau_figure).to_stdout }
