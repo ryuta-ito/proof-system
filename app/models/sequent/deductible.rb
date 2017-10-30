@@ -30,14 +30,6 @@ module Deductible
     formulas.any? { |formula| delta_sign === formula }
   end
 
-  def has_gamma?
-    formulas.any? { |formula| gamma_sign === formula }
-  end
-
-  def has_delta?
-    formulas.any? { |formula| delta_sign === formula }
-  end
-
   def substitute(target, replace)
     if Array === replace
       self.class.new( formulas: formulas.flat_map { |formula| formula.identify?(target) ? replace : formula } )
