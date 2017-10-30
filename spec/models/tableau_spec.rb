@@ -157,5 +157,25 @@ describe Tableau do
       end
       it { expect { subject }.to output(tableau_figure).to_stdout }
     end
+
+    context 'predicate example' do
+      let(:tableau) { Tableau.expantion_build_by_sequent(Sequent.build('∀x.P(x) ∨ Q |- ∀y.(P(y) ∨ Q)')) }
+      let(:tableau_figure) do
+        <<~EOS
+          ∀x.P(x) ∨ Q
+          > ∀y.(P(y) ∨ Q)
+            Q
+            > (P(B) ∨ Q)
+            > P(B)
+            > Q
+          ∀x.P(x)
+          > (P(A) ∨ Q)
+          > P(A)
+          > Q
+          P(A)
+        EOS
+      end
+      it { expect { subject }.to output(tableau_figure).to_stdout }
+    end
   end
 end

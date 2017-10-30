@@ -7,6 +7,12 @@ class Tableau
   include Term::Util
 
   class << self
+    def build_by_sequent(sequent)
+      series = Tableaux::Series.new( tableaux: sequent.tableaux )
+      series.init
+      series.first
+    end
+
     def expantion_build_by_sequent(sequent)
       series = Tableaux::Series.new( tableaux: sequent.tableaux )
       series.init
@@ -17,20 +23,21 @@ class Tableau
     def iterative_expantion(all_tableaux)
       target_tableaux = non_expantion_tableaux(all_tableaux)
 
-      unless target_tableaux.empty?
+      unless target_tableaux.empty? || target_tableaux.first.satisfy?
         target_tableaux.each { |tableau| tableau.expantion }
         iterative_expantion target_tableaux.first.root.all
       end
     end
 
     def non_expantion_tableaux(all_tableaux)
+      target_tableaux = all_tableaux.reject(&:expantioned?)
       %i(alpha_signs beta_signs delta_sign).each do |method|
-        tableaux = all_tableaux.reject(&:expantioned?).select do |tableau|
+        tableaux = target_tableaux.select do |tableau|
           [tableau.send(method)].flatten.any? { |sign| sign === tableau.formula }
         end
         return tableaux unless tableaux.empty?
       end
-      all_tableaux.select { |tableau| tableau.gamma_sign === tableau }
+      all_tableaux.select { |tableau| tableau.gamma_sign === tableau.formula }
     end
   end
 
@@ -40,6 +47,26 @@ class Tableau
 
   def root
     parent ? parent.root : self
+  end
+
+  def branch
+    parent ? [self] + parent.branch : []
+  end
+
+  def branches
+    leafs.map { |leaf| leaf.branch }
+  end
+
+  def satisfy?
+    branches.all? do |branch|
+      assumptions = branch.select { |tableau| Tableau::Assumption === tableau }
+      consequences = branch - assumptions
+      assumptions.any? do |tableau_a|
+        consequences.any? do |tableau_b|
+          tableau_a.formula.identify?(tableau_b.formula)
+        end
+      end
+    end
   end
 
   def expantion
