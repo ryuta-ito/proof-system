@@ -1,5 +1,5 @@
-describe SequentFigure do
-  let(:sequent_figure) { SequentFigure.build_by_file('dummy_file_path') }
+describe NkFigure do
+  let(:sequent_figure) { NkFigure.build_by_file('dummy_file_path') }
   let(:sequent_figure_data) do
     <<~EOS
       A => B, C => A, C |- C => A

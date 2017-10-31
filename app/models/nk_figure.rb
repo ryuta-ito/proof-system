@@ -5,7 +5,7 @@
 
 require 'rules/commons/deduction'
 
-class SequentFigure
+class NkFigure
   attr_accessor :deductions
 
   include ActiveModel::Model
