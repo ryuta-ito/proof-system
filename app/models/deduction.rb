@@ -1,53 +1,81 @@
 # deduction:
-#   <upper_sequents>
+#   <deduction_1>
+#     ...
+#       <deduction_n>
 #   ------ (<rule_name>)
-#   <lower_sequent>.
+#   <lower_sequent>
 #
-# uppper_sequents:
-#   <sequent_1>, ..., <sequent_n>
+#   |  <lower_sequent>
+#
 
 class Deduction
-  attr_accessor :upper_sequents, :lower_sequent, :rule
+  attr_accessor :upper_deductions, :lower_sequent, :rule
 
   include ActiveModel::Model
 
   class << self
     def multi_build_by_file(file_path)
-      parse_deductions(FileConnector.read file_path).map do |deduction_data|
-        build(deduction_data)
-      end
+      build FileConnector.read(file_path)
     end
 
     def build(deduction_data)
-      new( upper_sequents: Sequent.multi_build(parse_deduction_upper deduction_data),
-           lower_sequent: Sequent.build(parse_deduction_lower deduction_data),
+      new( upper_deductions: (parse_upper_deductions deduction_data).map { |deduction_data| build(deduction_data) },
+           lower_sequent: Sequent.build(parse_lower_sequent deduction_data),
            rule: Rules.build(parse_rule_name deduction_data) )
     end
 
     private
 
-    def parse_deductions(deductions_data)
-      deductions_data.split(/\.$/)
+    def parse_upper_deductions(deduction_data)
+      group_by_indent(strip_lower_sequent(deduction_data))
     end
 
-    def parse_deduction_upper(deduction_data)
-      deduction_data.split(/------.+\)/)[0].strip
+    def strip_lower_sequent(deduction_data)
+      deduction_data.split("\n").reverse.drop(2).reverse
     end
 
-    def parse_deduction_lower(deduction_data)
-      deduction_data.split(/------.+\)/)[1].strip
+    def group_by_indent(deductions_data)
+      return [] if deductions_data.empty?
+      indent = indent_size(deductions_data.last)
+      index = deductions_data.reverse.find_index { |deduction_row| indent_size(deduction_row) < indent }
+      return [deductions_data.join("\n")] unless index
+      drop_size = deductions_data.size - index
+      [deductions_data.drop(drop_size).join("\n")] + group_by_indent( deductions_data.take(drop_size) )
+    end
+
+    def indent_size(deduction_row)
+      deduction_row.match(/^\ */).to_s.size
+    end
+
+    def parse_lower_sequent(deduction_data)
+      deduction_data.split(/------.+\)/).last.strip
     end
 
     def parse_rule_name(deduction_data)
-      deduction_data.match(/------.+\((?<rule_name>.+)\)/)[:rule_name]
+      if deduction_data.match(/------/)
+        deduction_data.strip.split("\n").reverse[1].match(/------.+\((?<rule_name>.+)\)/)[:rule_name]
+      else
+        ''
+      end
     end
   end
 
   def show
-    upper_sequents_str = upper_sequents.map do |sequent|
-      sequent.str
-    end.join("\n")
-    puts "#{upper_sequents_str}\n------ (#{rule.name})\n#{lower_sequent.str}."
+    puts reverse_str.split("\n").reverse.join("\n")
+  end
+
+  def reverse_str(tab_base='')
+    if rule.name.empty?
+      "#{tab_base}#{lower_sequent.str.lstrip}\n"
+    else
+      "#{tab_base}#{lower_sequent.str.lstrip}\n" +
+        "#{tab_base}------ (#{rule.name})\n" +
+        upper_deductions.map.with_index do |deduction, index|
+          [deduction, '  ' * (upper_deductions.size - index - 1)]
+        end.flat_map do |deduction, tab|
+          deduction.reverse_str(tab_base + tab)
+        end.join
+    end
   end
 
   def satisfy?

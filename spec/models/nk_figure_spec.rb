@@ -2,23 +2,19 @@ describe NkFigure do
   let(:sequent_figure) { NkFigure.build_by_file('dummy_file_path') }
   let(:sequent_figure_data) do
     <<~EOS
-      A => B, C => A, C |- C => A
-      A => B, C => A, C |- C
-      ------ (=> E)
-      A => B, C => A, C |- A.
       A => B, C => A, C |- A => B
-      A => B, C => A, C |- A
+        A => B, C => A, C |- C => A
+          A => B, C => A, C |- C
+        ------ (=> E)
+        A => B, C => A, C |- A
       ------ (=> E)
-      A => B, C => A, C |- B.
       A => B, C => A, C |- B
       ------ (=> I)
-      A => B, C => A |- C => B.
       A => B, C => A |- C => B
       ------ (=> I)
-      A => B |- (C => A) => (C => B).
       A => B |- (C => A) => (C => B)
       ------ (=> I)
-       |- (A => B) => ((C => A) => (C => B)).
+      |- (A => B) => ((C => A) => (C => B))
     EOS
   end
   include_context 'use File.read mock'

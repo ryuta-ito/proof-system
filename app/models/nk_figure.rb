@@ -6,23 +6,17 @@
 require 'rules/commons/deduction'
 
 class NkFigure
-  attr_accessor :deductions
+  attr_accessor :root_deduction
 
   include ActiveModel::Model
   include Rules::Commons::Deduction
+  extend Forwardable
+
+  def_delegators :root_deduction, :show, :satisfy?
 
   class << self
     def build_by_file(file_path)
-      new( deductions: Deduction.multi_build_by_file(file_path) )
+      new( root_deduction: Deduction.multi_build_by_file(file_path) )
     end
-  end
-
-  def satisfy?
-    upper_sequents_satisfy?(deductions) &&
-      deductions.all? { |deduction| deduction.satisfy? }
-  end
-
-  def show
-    deductions.each { |deduction| deduction.show }; nil
   end
 end
