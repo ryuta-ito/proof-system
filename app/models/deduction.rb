@@ -9,7 +9,7 @@
 #
 
 class Deduction
-  attr_accessor :upper_deductions, :lower_sequent, :rule
+  attr_accessor :upper_deductions, :upper_sequents, :lower_sequent, :rule
 
   include ActiveModel::Model
 
@@ -78,15 +78,16 @@ class Deduction
     end
   end
 
+  def leaf?
+    upper_deductions.empty?
+  end
+
   def satisfy?
-    rule.module.satisfy? self
+    return lower_sequent.obvious? if leaf?
+    rule.module.satisfy?(self) && upper_deductions.all?(&:satisfy?)
   end
 
-  def obvious?
-    upper_sequents.all? { |upper_sequent| upper_sequent.obvious? }
-  end
-
-  def all_sequents
-    upper_sequents + [lower_sequent]
+  def upper_sequents
+    upper_deductions.map { |deduction| deduction.lower_sequent }
   end
 end

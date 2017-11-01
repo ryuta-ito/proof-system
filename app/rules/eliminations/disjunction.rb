@@ -11,10 +11,14 @@ module Rules::Eliminations::Disjunction
     sequent_a, sequent_b, sequent_c = deduction.upper_sequents
     sequent_d = deduction.lower_sequent
 
-    Disjunction === sequent_a.theorem &&
-      sequent_b.theorem.identify?(sequent_c.theorem) &&
-      sequent_c.theorem.identify?(sequent_d.theorem) &&
-      sequent_b.assumption.diff(sequent_a.assumption).formulas.first.identify?(sequent_a.theorem.left) &&
-      sequent_c.assumption.diff(sequent_a.assumption).formulas.first.identify?(sequent_a.theorem.right)
+    condition = -> (sequent_a, sequent_b, sequent_c) do 
+      Disjunction === sequent_a.theorem &&
+        sequent_b.theorem.identify?(sequent_c.theorem) &&
+        sequent_c.theorem.identify?(sequent_d.theorem) &&
+        sequent_b.assumption.diff(sequent_a.assumption).formulas.first.identify?(sequent_a.theorem.left) &&
+        sequent_c.assumption.diff(sequent_a.assumption).formulas.first.identify?(sequent_a.theorem.right)
+    end
+
+    [sequent_a, sequent_b, sequent_c].permutation.any? { |a, b, c| condition.(a, b, c) }
   end
 end

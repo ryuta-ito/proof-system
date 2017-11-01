@@ -30,31 +30,21 @@ describe NkFigure do
     context '∀x.P(x) ∨ Q => ∀y.(P(y) ∨ Q)' do
       let(:sequent_figure_data) do
         <<~EOS
-          ∀x.P(x) ∨ Q, ∀x.P(x) |- ∀x.P(x)
-          ------ (∀ E)
-          ∀x.P(x) ∨ Q, ∀x.P(x) |- P(y).
-
-          ∀x.P(x) ∨ Q, ∀x.P(x) |- P(y)
-          ------ (∨ I)
-          ∀x.P(x) ∨ Q, ∀x.P(x) |- P(y) ∨ Q.
-
-          ∀x.P(x) ∨ Q, Q |- Q
-          ------ (∨ I)
-          ∀x.P(x) ∨ Q, Q |- P(y) ∨ Q.
-
           ∀x.P(x) ∨ Q |- ∀x.P(x) ∨ Q
-          ∀x.P(x) ∨ Q, ∀x.P(x) |- P(y) ∨ Q
-          ∀x.P(x) ∨ Q, Q |- P(y) ∨ Q
+            ∀x.P(x) ∨ Q, ∀x.P(x) |- ∀x.P(x)
+            ------ (∀ E)
+            ∀x.P(x) ∨ Q, ∀x.P(x) |- P(y)
+            ------ (∨ I)
+            ∀x.P(x) ∨ Q, ∀x.P(x) |- P(y) ∨ Q
+              ∀x.P(x) ∨ Q, Q |- Q
+              ------ (∨ I)
+              ∀x.P(x) ∨ Q, Q |- P(y) ∨ Q
           ------ (∨ E)
-          ∀x.P(x) ∨ Q |- P(y) ∨ Q.
-
           ∀x.P(x) ∨ Q |- P(y) ∨ Q
           ------ (∀ I)
-          ∀x.P(x) ∨ Q |- ∀y.(P(y) ∨ Q).
-
           ∀x.P(x) ∨ Q |- ∀y.(P(y) ∨ Q)
           ------ (=> I)
-           |- ∀x.P(x) ∨ Q => ∀y.(P(y) ∨ Q).
+          |- ∀x.P(x) ∨ Q => ∀y.(P(y) ∨ Q)
         EOS
       end
       it { is_expected.to be true }

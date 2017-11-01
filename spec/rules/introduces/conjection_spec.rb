@@ -5,12 +5,12 @@ describe Rules::Introduces::Conjunction do
 
     context 'valid' do
       let(:deduction_data) do
-        """
+        <<~EOS
           A, B |- A
-          A, B |- B
+            A, B |- B
           ------ (∧ I)
           A, B |- A ∧ B
-        """
+        EOS
       end
       it { is_expected.to be true}
     end

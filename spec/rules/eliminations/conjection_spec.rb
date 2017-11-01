@@ -5,11 +5,11 @@ describe Rules::Eliminations::Conjunction do
 
     context 'valid' do
       let(:deduction_data) do
-        """
+        <<~EOS
           A ∧ B |- A ∧ B
           ------ (∧ E)
           A ∧ B |- A
-        """
+        EOS
       end
       it { is_expected.to be true}
     end

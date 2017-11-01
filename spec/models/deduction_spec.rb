@@ -7,24 +7,24 @@ describe Deduction do
     context 'elimination' do
       context 'conjunction' do
         let(:deduction_data) do
-          '''
+          <<~EOS
             A∧B |- A∧B
             ------ (∧ E)
             A∧B |- B
-          '''
+          EOS
         end
         it { is_expected.to be true }
       end
 
       context 'disjunction' do
         let(:deduction_data) do
-          '''
-            P ∨ Q, R    |- P ∨ Q
-            P ∨ Q, R, P |- R
-            P ∨ Q, R, Q |- R
+          <<~EOS
+            P ∨ Q, R |- P ∨ Q
+              P ∨ Q, R, P |- R
+                P ∨ Q, R, Q |- R
             ------ (∨ E)
             P ∨ Q, R |- R
-          '''
+          EOS
         end
         it { is_expected.to be true }
       end
@@ -33,23 +33,23 @@ describe Deduction do
     context 'introduce' do
       context 'conjunction' do
         let(:deduction_data) do
-          '''
+          <<~EOS
             A,B |- A
-            A,B |- B
+              A,B |- B
             ------ (∧ I)
             A,B |- A∧B
-          '''
+          EOS
         end
         it { is_expected.to be true }
       end
 
       context 'disjunction' do
         let(:deduction_data) do
-          '''
+          <<~EOS
             P |- P
             ------ (∨ I)
             P |- P ∨ Q
-          '''
+          EOS
         end
         it { is_expected.to be true }
       end

@@ -5,11 +5,11 @@ describe Rules::Introduces::Disjunction do
 
     context 'valid' do
       let(:deduction_data) do
-        """
+        <<~EOS
           A |- A
           ------ (∨ I)
           A |- A ∨ B
-        """
+        EOS
       end
       it { is_expected.to be true}
     end

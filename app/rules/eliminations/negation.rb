@@ -13,9 +13,11 @@ module Rules::Eliminations::Negation
     sequent_a, sequent_b = deduction.upper_sequents
     sequent_c = deduction.lower_sequent
 
-    Negation === sequent_b.theorem &&
-      sequent_a.theorem.identify?(sequent_b.theorem.formula) &&
-      Contradiction === sequent_c.theorem &&
-      assumptions_equal?(deduction)
+    [sequent_a, sequent_b].permutation.any? do |sequent_a, sequent_b|
+      Negation === sequent_b.theorem &&
+        sequent_a.theorem.identify?(sequent_b.theorem.formula) &&
+        Contradiction === sequent_c.theorem &&
+        assumptions_equal?(deduction)
+    end
   end
 end

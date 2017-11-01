@@ -7,7 +7,7 @@ describe Rules::Eliminations::Existence do
       let(:deduction_data) do
         <<~EOS
           ∃x.P(x), Q |- ∃x.P(x)
-          ∃x.P(x), Q, P(x) |- Q
+            ∃x.P(x), Q, P(x) |- Q
           ------ (∃ E)
           ∃x.P(x), Q |- Q
         EOS

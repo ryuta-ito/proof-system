@@ -11,9 +11,13 @@ module Rules::Eliminations::Imply
   def self.satisfy?(deduction)
     sequent_a, sequent_b = deduction.upper_sequents
 
-    assumptions_equal?(deduction) &&
-      Imply === sequent_a.theorem &&
-      sequent_a.theorem.left.identify?(sequent_b.theorem) &&
-      sequent_a.theorem.right.identify?(deduction.lower_sequent.theorem)
+    [sequent_a, sequent_b].permutation.any? do |sequent_a, sequent_b|
+      assumptions_equal?(deduction) &&
+        Imply === sequent_a.theorem &&
+        sequent_a.theorem.left.identify?(sequent_b.theorem) &&
+        sequent_a.theorem.right.identify?(deduction.lower_sequent.theorem)
+    end
+  rescue
+    binding.pry
   end
 end

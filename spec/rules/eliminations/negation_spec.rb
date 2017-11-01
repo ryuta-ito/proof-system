@@ -7,7 +7,7 @@ describe Rules::Eliminations::Negation do
       let(:deduction_data) do
         <<~EOS
           P, ¬P |- P
-          P, ¬P |- ¬P
+            P, ¬P |- ¬P
           ------ (¬ E)
           P, ¬P |- ⊥
         EOS
