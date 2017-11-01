@@ -1,6 +1,10 @@
 class Rules
   attr_accessor :name
 
+  extend Forwardable
+
+  def_delegator :name, :empty?
+
   class << self
     def build(name)
       new.tap do |rule|

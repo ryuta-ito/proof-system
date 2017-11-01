@@ -65,7 +65,7 @@ class Deduction
   end
 
   def reverse_str(tab_base='')
-    if rule.name.empty?
+    if rule.empty?
       "#{tab_base}#{lower_sequent.str.lstrip}\n"
     else
       "#{tab_base}#{lower_sequent.str.lstrip}\n" +
