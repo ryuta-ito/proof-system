@@ -27,24 +27,11 @@ class Deduction
     private
 
     def parse_upper_deductions(deduction_data)
-      group_by_indent(strip_lower_sequent(deduction_data))
+      IndentParser.group_reverse(strip_lower_sequent(deduction_data))
     end
 
     def strip_lower_sequent(deduction_data)
       deduction_data.split("\n").reverse.drop(2).reverse
-    end
-
-    def group_by_indent(deductions_data)
-      return [] if deductions_data.empty?
-      indent = indent_size(deductions_data.last)
-      index = deductions_data.reverse.find_index { |deduction_row| indent_size(deduction_row) < indent }
-      return [deductions_data.join("\n")] unless index
-      drop_size = deductions_data.size - index
-      [deductions_data.drop(drop_size).join("\n")] + group_by_indent( deductions_data.take(drop_size) )
-    end
-
-    def indent_size(deduction_row)
-      deduction_row.match(/^\ */).to_s.size
     end
 
     def parse_lower_sequent(deduction_data)

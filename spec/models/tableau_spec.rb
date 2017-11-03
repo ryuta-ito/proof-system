@@ -143,39 +143,12 @@ describe Tableau do
 
     context 'contraposition' do
       let(:tableau) { Tableau.expantion_build_by_sequent(Sequent.build('A => B |- ¬B => ¬A')) }
-      let(:tableau_figure) do
-        <<~EOS
-          A => B
-          > (¬B => ¬A)
-          ¬B
-          > ¬A
-          > B
-          A
-            B
-          > A
-        EOS
-      end
-      it { expect { subject }.to output(tableau_figure).to_stdout }
+      it { expect { subject }.to output(contraposition_tableau).to_stdout }
     end
 
-    context 'predicate example' do
+    context 'predicate example 1' do
       let(:tableau) { Tableau.expantion_build_by_sequent(Sequent.build('∀x.P(x) ∨ Q |- ∀y.(P(y) ∨ Q)')) }
-      let(:tableau_figure) do
-        <<~EOS
-          ∀x.P(x) ∨ Q
-          > ∀y.(P(y) ∨ Q)
-            Q
-            > (P(B) ∨ Q)
-            > P(B)
-            > Q
-          ∀x.P(x)
-          > (P(A) ∨ Q)
-          > P(A)
-          > Q
-          P(A)
-        EOS
-      end
-      it { expect { subject }.to output(tableau_figure).to_stdout }
+      it { expect { subject }.to output(predicate_tableau_1).to_stdout }
     end
   end
 end
