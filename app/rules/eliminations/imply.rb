@@ -17,7 +17,5 @@ module Rules::Eliminations::Imply
         sequent_a.theorem.left.identify?(sequent_b.theorem) &&
         sequent_a.theorem.right.identify?(deduction.lower_sequent.theorem)
     end
-  rescue
-    binding.pry
   end
 end
