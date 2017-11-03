@@ -13,7 +13,7 @@ module FormulaParser
     end
 
     def divide_most_low_priority_operation(data)
-      splited_data = split(ParenthesesParser.strip_edge_parentheses data)
+      splited_data = split(ParenthesesParser.strip_edge_parentheses data.strip)
       return [splited_data.join, '', :atom] if splited_data.size == 1
 
       op_data = most_low_priority_operation(splited_data)
