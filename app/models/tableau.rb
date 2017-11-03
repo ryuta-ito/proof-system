@@ -1,3 +1,15 @@
+# tableau:
+#   <formula> | > <formula>
+#
+# tableaux:
+#   <tableaux_1>
+#     <tableaux_2>
+#   <tableaux_3>
+#
+#   <tableaux_1>
+#   <tableaux_2>
+#
+
 require 'models/term/util'
 
 class Tableau
@@ -7,6 +19,15 @@ class Tableau
   include Term::Util
 
   class << self
+    def build(tableau_data)
+      tableau_class = tableau_data =~ /\A\ *>/ ?  Tableau::Consequence : Tableau::Assumption
+      tableau_class.new( formula: Formula.build(tableau_data.sub /\A\ *>/, '') )
+    end
+
+    def build_by_file(file_path)
+      build_root FileConnector.read(file_path)
+    end
+
     def build_by_sequent(sequent)
       series = Tableaux::Series.new( tableaux: sequent.tableaux )
       series.init
@@ -19,6 +40,8 @@ class Tableau
       iterative_expantion series.first.all
       series.first
     end
+
+    private
 
     def iterative_expantion(all_tableaux)
       target_tableaux = non_expantion_tableaux(all_tableaux)
@@ -38,6 +61,31 @@ class Tableau
         return tableaux unless tableaux.empty?
       end
       all_tableaux.select { |tableau| tableau.gamma_sign === tableau.formula }
+    end
+
+    def parse_root_tableau(tableau_data)
+      tableau_data.split("\n").first.strip
+    end
+
+    def parse_children_tableau(tableau_data)
+      tableau_data.split("\n").drop(1).join("\n")
+    end
+
+    def build_root(tableau_data)
+      build(parse_root_tableau tableau_data).tap do |root_tableau|
+        root_tableau.children = IndentParser.group(parse_children_tableau tableau_data).map do |child_data|
+          build_child(root_tableau, child_data)
+        end
+      end
+    end
+
+    def build_child(parent, tableau_data)
+      build(parse_root_tableau tableau_data).tap do |child_tableau|
+        child_tableau.parent = parent
+        child_tableau.children = IndentParser.group(parse_children_tableau tableau_data).map do |child_data|
+          build_child(child_tableau, child_data)
+        end
+      end
     end
   end
 

@@ -1,6 +1,23 @@
 describe Tableau do
   include_context 'default lets'
 
+  describe '.build_by_file' do
+    subject { tableau.show }
+
+    include_context 'use File.read mock'
+    let(:tableau) { Tableau.build_by_file('dummy_file_path') }
+
+    context 'contraposition' do
+      let(:file_connector_read_text) { contraposition_tableau }
+      it { expect { subject }.to output(contraposition_tableau).to_stdout }
+    end
+
+    context 'predicate example 1' do
+      let(:file_connector_read_text) { predicate_tableau_1 }
+      it { expect { subject }.to output(predicate_tableau_1).to_stdout }
+    end
+  end
+
   describe '#expantion' do
     subject { tableau.expantion }
 
