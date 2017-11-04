@@ -21,7 +21,7 @@ class Deduction
     def build(deduction_data)
       new( upper_deductions: (parse_upper_deductions deduction_data).map { |deduction_data| build(deduction_data) },
            lower_sequent: Sequent.build(parse_lower_sequent deduction_data),
-           rule: Rules.build(parse_rule_name deduction_data) )
+           rule: Rules.new( name: parse_rule_name(deduction_data) ) )
     end
 
     private

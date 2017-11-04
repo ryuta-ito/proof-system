@@ -47,7 +47,7 @@ class Sequent
   end
 
   def deductive_str_reverse(count = 0)
-    sequents, rule_name = [deductive_sequents.sequents, deductive_sequents.rule_name]
+    sequents, rule_name = [deductive_sequents.sequents, deductive_sequents.rule.name]
     tab = ' ' * count
     upper_str = "#{tab}#{str}\n#{tab}------ (#{rule_name})\n"
 
@@ -122,10 +122,9 @@ class Sequent
   end
 
   def compose(sequents_a, sequents_b)
-    rule_name = [sequents_a.rule_name, sequents_b.rule_name].reject(&:empty?).join(', ')
     sequents = [self.class.new( assumption: sequents_a.assumption.add_formulas(sequents_b.assumption),
                                 consequence: sequents_a.consequence.add_formulas(sequents_b.consequence) )]
-    Sequents.new sequents: sequents, rule_name: rule_name
+    Sequents.new sequents: sequents, rule: Rules::LK.build_by_sequents(sequents_a, sequents_b)
   end
 
   def weakening
@@ -135,11 +134,11 @@ class Sequent
     if assumption.formulas.size > 1
       weakening_formula = assumption.find { |formula| !id_formula.identify?(formula) }
       w_l_sequent = Sequent.new( assumption: assumption.substitute(weakening_formula, []), consequence: consequence )
-      Sequents.new( sequents: [w_l_sequent], rule_name: 'W L' )
+      Sequents.new( sequents: [w_l_sequent], rule: Rules.new( name: 'W L' ) )
     elsif consequence.formulas.size > 1
       weakening_formula = consequence.find { |formula| !id_formula.identify?(formula) }
       w_r_sequent = Sequent.new( assumption: assumption, consequence: consequence.substitute(weakening_formula, []) )
-      Sequents.new( sequents: [w_r_sequent], rule_name: 'W R' )
+      Sequents.new( sequents: [w_r_sequent], rule: Rules.new( name: 'W R' ) )
     else
       Sequents.build_empty
     end

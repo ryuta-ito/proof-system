@@ -1,5 +1,5 @@
 describe Rules do
-  let(:rules) { Rules.build(name) }
+  let(:rules) { Rules.new( name: name ) }
   let(:name) { 'name' }
 
   describe '#show' do

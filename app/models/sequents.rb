@@ -1,10 +1,10 @@
 class Sequents
-  attr_accessor :sequents, :rule_name
+  attr_accessor :sequents, :rule
 
   include ActiveModel::Model
 
   def self.build_empty
-    new sequents: [], rule_name: ''
+    new sequents: [], rule: Rules.build_empty
   end
 
   def assumption

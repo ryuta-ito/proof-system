@@ -1,15 +1,14 @@
 class Rules
   attr_accessor :name
 
+  include ActiveModel::Model
   extend Forwardable
 
   def_delegator :name, :empty?
 
   class << self
-    def build(name)
-      new.tap do |rule|
-        rule.name = name
-      end
+    def build_empty
+      new name: ''
     end
   end
 
