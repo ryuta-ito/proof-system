@@ -21,7 +21,7 @@ class Deduction
     def build(deduction_data)
       new( upper_deductions: (parse_upper_deductions deduction_data).map { |deduction_data| build(deduction_data) },
            lower_sequent: Sequent.build(parse_lower_sequent deduction_data),
-           rule: Rules.new( name: parse_rule_name(deduction_data) ) )
+           rule: Rules.build_by_reverse_figure(deduction_data) )
     end
 
     private
@@ -36,14 +36,6 @@ class Deduction
 
     def parse_lower_sequent(deduction_data)
       deduction_data.split(/------.+\)/).last.strip
-    end
-
-    def parse_rule_name(deduction_data)
-      if deduction_data.match(/------/)
-        deduction_data.strip.split("\n").reverse[1].match(/------.+\((?<rule_name>.+)\)/)[:rule_name]
-      else
-        ''
-      end
     end
   end
 

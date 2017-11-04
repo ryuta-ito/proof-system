@@ -10,6 +10,18 @@ class Rules
     def build_empty
       new name: ''
     end
+
+    def build_by_figure(figure_data)
+      if figure_data.match(/------.+\(.+\)/)
+        new name: figure_data.match(/------.+\((?<rule_name>.+)\)/)[:rule_name]
+      else
+        build_empty
+      end
+    end
+
+    def build_by_reverse_figure(figure_data)
+      build_by_figure figure_data.strip.split("\n").reverse.join("\n")
+    end
   end
 
   def show
