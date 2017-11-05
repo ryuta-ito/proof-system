@@ -1,4 +1,5 @@
 describe Sequent do
+  include_context 'default lets'
   let(:sequent) { Sequent.build('A |- A')}
 
   describe '#show' do
@@ -11,25 +12,7 @@ describe Sequent do
 
     context 'contraposition' do
       let(:sequent) { Sequent.build('A => B |- ¬B => ¬A') }
-      let(:proof_figure) do
-        <<~EOS
-          A |- A
-          ------ (W R)
-          A |- B, A
-              B |- B
-              ------ (W L)
-              B, A |- B
-          ------ (=> L)
-          A => B, A |- B
-          ------ (¬ R)
-          A => B |- ¬A, B
-          ------ (¬ L)
-          A => B, ¬B |- ¬A
-          ------ (=> R)
-          A => B |- ¬B => ¬A
-        EOS
-      end
-      it { expect { subject }.to output(proof_figure).to_stdout }
+      it { expect { subject }.to output(contraposition_sequent_figure).to_stdout }
     end
 
     context 'proposition example (invalid)' do
@@ -53,31 +36,7 @@ describe Sequent do
 
     context 'universal quantifier example' do
       let(:sequent) { Sequent.build('∀x.P(x) ∨ Q |- ∀y.(P(y) ∨ Q)') }
-      let(:proof_figure) do
-        <<~EOS
-          P(A) |- P(A)
-          ------ (W R)
-          P(A) |- P(A), Q
-          ------ (W L)
-          ∀x.P(x), P(A) |- P(A), Q
-          ------ (∀ L)
-          ∀x.P(x) |- P(A), Q
-          ------ (∨ R)
-          ∀x.P(x) |- P(A) ∨ Q
-          ------ (∀ R)
-          ∀x.P(x) |- ∀y.(P(y) ∨ Q)
-              Q |- Q
-              ------ (W R)
-              Q |- P(A), Q
-              ------ (∨ R)
-              Q |- P(A) ∨ Q
-              ------ (∀ R)
-              Q |- ∀y.(P(y) ∨ Q)
-          ------ (∨ L)
-          ∀x.P(x) ∨ Q |- ∀y.(P(y) ∨ Q)
-        EOS
-      end
-      it { expect { subject }.to output(proof_figure).to_stdout }
+      it { expect { subject }.to output(universal_quantifier_sequent_figure_1).to_stdout }
     end
   end
 end
