@@ -4,7 +4,7 @@
 require 'models/term/util'
 
 class Sequent
-  attr_accessor :assumption, :theorem, :consequence
+  attr_accessor :assumption, :theorem, :consequence, :rule, :deductive_sequents
 
   include ActiveModel::Model
   include Term::Util
@@ -23,6 +23,16 @@ class Sequent
            consequence: consequence )
     end
 
+    def build_by_figure(sequents_data)
+      build(parse_root sequents_data).tap do |sequent|
+        sequent.rule = Rules.build_by_reverse_figure(sequents_data)
+        sequents = IndentParser.group_reverse(strip_root_sequent sequents_data).map do |sequents_data|
+          build_by_figure sequents_data
+        end.reverse
+        sequent.deductive_sequents = Sequents.new( sequents: sequents, rule: Rules.build_by_reverse_figure(sequents_data) )
+      end
+    end
+
     private
 
     def parse_left(sequent_data)
@@ -35,6 +45,14 @@ class Sequent
 
     def parse_upper_sequents_data(upper_sequents_data)
       upper_sequents_data.split("\n")
+    end
+
+    def parse_root(sequents_data)
+      sequents_data.split("\n").last
+    end
+
+    def strip_root_sequent(sequents_data)
+      sequents_data.split("\n").reverse.drop(2).reverse
     end
   end
 
@@ -93,6 +111,7 @@ class Sequent
   end
 
   def deductive_sequents
+    return @deductive_sequents if Sequents === @deductive_sequents
     return weakening if obvious?
     return deductive_sequents_alpha if both_sides.any? { |side| side.has_alpha? }
     return deductive_sequents_beta if both_sides.any? { |side| side.has_beta? }
