@@ -1,4 +1,5 @@
 describe Deduction do
+  include_context 'default lets'
   let(:deduction) { Deduction.build(deduction_data) }
 
   describe 'satisfy?' do
@@ -6,53 +7,32 @@ describe Deduction do
 
     context 'elimination' do
       context 'conjunction' do
-        let(:deduction_data) do
-          <<~EOS
-            A∧B |- A∧B
-            ------ (∧ E)
-            A∧B |- B
-          EOS
-        end
+        let(:deduction_data) { eli_conj_nk_figure }
         it { is_expected.to be true }
       end
 
       context 'disjunction' do
-        let(:deduction_data) do
-          <<~EOS
-            P ∨ Q, R |- P ∨ Q
-              P ∨ Q, R, P |- R
-                P ∨ Q, R, Q |- R
-            ------ (∨ E)
-            P ∨ Q, R |- R
-          EOS
-        end
+        let(:deduction_data) { eli_disj_nk_figure }
         it { is_expected.to be true }
       end
     end
 
     context 'introduce' do
       context 'conjunction' do
-        let(:deduction_data) do
-          <<~EOS
-            A,B |- A
-              A,B |- B
-            ------ (∧ I)
-            A,B |- A∧B
-          EOS
-        end
+        let(:deduction_data) { intro_conj_nk_figure }
         it { is_expected.to be true }
       end
 
       context 'disjunction' do
-        let(:deduction_data) do
-          <<~EOS
-            P |- P
-            ------ (∨ I)
-            P |- P ∨ Q
-          EOS
-        end
+        let(:deduction_data) { intro_disj_nk_figure }
         it { is_expected.to be true }
       end
     end
+  end
+
+  describe '#show' do
+    subject { deduction.show }
+    let(:deduction_data) { contraposition_nk_figure }
+    it { expect { subject }.to output(contraposition_nk_figure).to_stdout }
   end
 end

@@ -3,4 +3,5 @@ shared_context 'default lets' do
   include_context 'term lets'
   include_context 'tableau lets'
   include_context 'sequent lets'
+  include_context 'nk lets'
 end
