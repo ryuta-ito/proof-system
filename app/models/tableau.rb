@@ -105,24 +105,20 @@ class Tableau
     leafs.map { |leaf| leaf.branch }
   end
 
+  def proned_leafs
+    leafs.reject(&:contradict?)
+  end
+
   def satisfy?
-    branches.all? do |branch|
-      assumptions = branch.select { |tableau| Tableau::Assumption === tableau }
-      consequences = branch - assumptions
-      assumptions.any? do |tableau_a|
-        consequences.any? do |tableau_b|
-          tableau_a.formula.identify?(tableau_b.formula)
-        end
-      end
-    end
+    leafs.all?(&:contradict?)
   end
 
   def expantion
     @expantioned = true
     if Formula::Quantifier === formula
-      leafs.each { |leaf| expantion_tableux(self).set_parent(leaf) }
+      proned_leafs.each { |leaf| expantion_tableux(self).set_parent(leaf) }
     else
-      leafs.each { |leaf| expantion_tableux.set_parent(leaf) }
+      proned_leafs.each { |leaf| expantion_tableux.set_parent(leaf) }
     end
     self
   end
@@ -164,5 +160,15 @@ class Tableau
 
   def children_constants
     children.empty? ? [] : children.flat_map { |child| child.formula.constants + child.children_constants }
+  end
+
+  def contradict?
+    assumptions = branch.select { |tableau| Tableau::Assumption === tableau }
+    consequences = branch - assumptions
+    assumptions.any? do |tableau_a|
+      consequences.any? do |tableau_b|
+        tableau_a.formula.identify?(tableau_b.formula)
+      end
+    end
   end
 end

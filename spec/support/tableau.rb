@@ -27,4 +27,14 @@ shared_context 'tableau lets' do
       P(A)
     EOS
   end
+
+  let(:predicate_tableau_2) do
+    <<~EOS
+      ∀x.P(x) => P(A)
+      ∀x.P(x)
+      > P(A)
+        P(A)
+      > ∀x.P(x)
+    EOS
+  end
 end

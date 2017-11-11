@@ -167,5 +167,10 @@ describe Tableau do
       let(:tableau) { Tableau.expantion_build_by_sequent(Sequent.build('∀x.P(x) ∨ Q |- ∀y.(P(y) ∨ Q)')) }
       it { expect { subject }.to output(predicate_tableau_1).to_stdout }
     end
+
+    context 'predicate_tableau_2' do
+      let(:tableau) { Tableau.expantion_build_by_sequent(Sequent.build('∀x.P(x) => P(A), ∀x.P(x) |- P(A)')) }
+      it { expect { subject }.to output(predicate_tableau_2).to_stdout }
+    end
   end
 end
