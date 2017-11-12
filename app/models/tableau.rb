@@ -98,7 +98,7 @@ class Tableau
   end
 
   def branch
-    parent ? [self] + parent.branch : []
+    parent ? [self] + parent.branch : [self]
   end
 
   def branches
