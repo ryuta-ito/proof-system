@@ -46,7 +46,7 @@ class Tableau
     def iterative_expantion(all_tableaux)
       target_tableaux = non_expantion_tableaux(all_tableaux)
 
-      unless target_tableaux.empty? || target_tableaux.first.satisfy?
+      if !target_tableaux.empty? && !target_tableaux.any?(&:satisfy?)
         target_tableaux.each { |tableau| tableau.expantion }
         iterative_expantion target_tableaux.first.root.all
       end
