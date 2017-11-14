@@ -36,11 +36,11 @@ class Sequent
     private
 
     def parse_left(sequent_data)
-      sequent_data.split('|-')[0].strip
+      split_turnstile(sequent_data)[:left].strip
     end
 
     def parse_right(sequent_data)
-      sequent_data.split('|-')[1].strip
+      split_turnstile(sequent_data)[:right].strip
     end
 
     def parse_upper_sequents_data(upper_sequents_data)
@@ -53,6 +53,10 @@ class Sequent
 
     def strip_root_sequent(sequents_data)
       sequents_data.split("\n").reverse.drop(2).reverse
+    end
+
+    def split_turnstile(data)
+      data.match /(?<left>.*)\|-(?<right>.*)/
     end
   end
 
