@@ -19,4 +19,8 @@ class Term
 
   class UnParsableTerm < StandardError; end
   class UnknownTerm < StandardError; end
+
+  def show
+    puts str
+  end
 end
