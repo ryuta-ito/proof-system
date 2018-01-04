@@ -1,3 +1,3 @@
 #!/bin/sh
 
-pry -r ./config/proof_system.rb
+bundle exec pry -r ./config/proof_system.rb
