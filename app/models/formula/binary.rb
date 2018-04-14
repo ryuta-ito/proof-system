@@ -1,14 +1,17 @@
 class Formula::Binary < Formula
-  attr_accessor :left, :right, :code
+  attr_accessor :left, :right
 
   include ActiveModel::Model
 
   class << self
     def build(left_data, right_data)
-      new( code: code,
-           left: Formula.build(left_data),
+      new( left: Formula.build(left_data),
            right: Formula.build(right_data) )
     end
+  end
+
+  def code
+    self.class.code
   end
 
   def str
@@ -42,6 +45,24 @@ class Formula::Binary < Formula
 
     [left, right].zip([target_formula.left, target_formula.right]).reduce(Unifier.build) do |unifier, (formula_a, formula_b)|
       unifier.compose formula_a.unify(formula_b)
+    end
+  end
+
+  def clauses
+    if self.class === left and self.class === right
+      left.clauses + right.clauses
+    elsif self.class === left and !(self.class === right)
+      left.clauses + [right]
+    elsif !(self.class === left) and self.class === right
+      [left] + right.clauses
+    else
+      [left, right]
+    end
+  end
+
+  def flat
+    clauses.reverse.reduce do |clause_a, clause_b|
+      self.class.new left: clause_b, right: clause_a
     end
   end
 end

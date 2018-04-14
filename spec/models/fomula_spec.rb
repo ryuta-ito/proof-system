@@ -22,4 +22,16 @@ describe Formula do
     subject { Formula.build('¬P(f(A)) ∨ ∀x.Q(B) ∨ ⊥').constants }
     it { is_expected.to identify_array([constant_A, constant_B]) }
   end
+
+  describe '#disjunctive_normal' do
+    subject { formula.disjunctive_normal.flat }
+    let(:formula) { Formula.build('(A∨D)∧((B=>¬E)∨C)') }
+    it { is_expected.to identify(Formula.build('(A ∧ ¬B) ∨ ((A ∧ ¬E) ∨ ((D ∧ ¬B) ∨ ((D ∧ ¬E) ∨ ((A ∧ C) ∨ (D ∧ C)))))')) }
+  end
+
+  describe '#conjunctive_normal' do
+    subject { formula.conjunctive_normal.flat }
+    let(:formula) { Formula.build('(A∧D)∨((B=>¬E)∧C)') }
+    it { is_expected.to identify(Formula.build('A ∧ ((¬B ∨ ¬E) ∧ (D ∧ ((¬B ∨ ¬E) ∧ ((A ∨ C) ∧ (D ∨ C)))))')) }
+  end
 end

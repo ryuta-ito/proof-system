@@ -22,4 +22,25 @@ class Conjunction < Formula::Binary
   def expantion_tableux_assumption
     Tableaux::Series.new( tableaux: [ Tableau::Assumption.new( formula: left ), Tableau::Assumption.new( formula: right ) ])
   end
+
+  # A ∧ (B ∨ C) -> (A ∧ B) ∨ (A ∧ C)
+  # (A ∨ B) ∧ C -> (A ∧ C) ∨ (B ∧ C)
+  def disjunctive_normal
+    if Disjunction === right
+      Disjunction.new left: (Conjunction.new left: left, right: right.left).disjunctive_normal,
+                      right: (Conjunction.new left: left, right: right.right).disjunctive_normal
+    elsif Disjunction === left
+      Disjunction.new left: (Conjunction.new left: left.left, right: right).disjunctive_normal,
+                      right: (Conjunction.new left: left.right, right: right).disjunctive_normal
+    elsif left.literal? and right.literal?
+      self
+    else
+      (Conjunction.new left: left.disjunctive_normal, right: right.disjunctive_normal).disjunctive_normal
+    end
+  end
+
+  def conjunctive_normal
+    Conjunction.new left: left.conjunctive_normal,
+                    right: right.conjunctive_normal
+  end
 end

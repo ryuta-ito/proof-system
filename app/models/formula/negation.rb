@@ -63,4 +63,33 @@ class Negation < Formula
   def expantion_tableux_assumption
     Tableaux::Series.new( tableaux: [ Tableau::Consequence.new( formula: formula ) ])
   end
+
+  def disjunctive_normal
+    normal :disjunctive_normal
+  end
+
+  def conjunctive_normal
+    normal :conjunctive_normal
+  end
+
+  private
+
+  def normal(method)
+    case formula
+    when Atom
+      self
+    when Imply
+      (Negation.new formula: formula.send(method)).send(method)
+    when Negation
+      formula.formula.send(method)
+    when Conjunction
+      Disjunction.new left: (Negation.new formula: formula.left).send(method),
+                      right: (Negation.new formula: formula.right).send(method)
+    when Disjunction
+      Conjunction.new(left: (Negation.new formula: formula.left).send(method),
+                      right: (Negation.new formula: formula.right).send(method)).send(method)
+    else
+      raise 'unexpected'
+    end
+  end
 end

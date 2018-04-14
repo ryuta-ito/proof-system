@@ -103,4 +103,10 @@ class Atom < Formula
       unifier.compose term_a.unify(term_b)
     end
   end
+
+  def disjunctive_normal
+    self
+  end
+
+  alias :conjunctive_normal :disjunctive_normal
 end

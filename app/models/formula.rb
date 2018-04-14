@@ -85,4 +85,8 @@ class Formula
       Sequents.new(sequents: deductive_sequents_assumption(sequent), rule: Rules::LK.build(self, sign))
     end
   end
+
+  def literal?
+    Atom === self or (Negation === self and Atom === self.formula)
+  end
 end

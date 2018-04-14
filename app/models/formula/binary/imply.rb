@@ -2,6 +2,8 @@
 #   <formula> => <formula>
 
 class Imply < Formula::Binary
+  extend Forwardable
+
   def self.code
     '=>'
   end
@@ -29,4 +31,11 @@ class Imply < Formula::Binary
   def expantion_tableux_assumption
     Tableaux::Parallel.new( tableaux: [ Tableau::Consequence.new( formula: left ), Tableau::Assumption.new( formula: right ) ])
   end
+
+  def disjunctive_normal
+    Disjunction.new left: Negation.new(formula: left).disjunctive_normal,
+                    right: right.disjunctive_normal
+  end
+
+  def_delegator :disjunctive_normal, :conjunctive_normal
 end
