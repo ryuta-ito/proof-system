@@ -34,6 +34,18 @@ describe Sequent do
       it { expect { subject }.to output(proof_figure).to_stdout }
     end
 
+    context 'proposition example (duplicated)' do
+      let(:sequent) { Sequent.build('A, A |- A') }
+      let(:proof_figure) do
+        <<~EOS
+          A |- A
+          ------ (C)
+          A, A |- A
+        EOS
+      end
+      it { expect { subject }.to output(proof_figure).to_stdout }
+    end
+
     context 'universal quantifier example' do
       let(:sequent) { Sequent.build('∀x.P(x) ∨ Q |- ∀y.(P(y) ∨ Q)') }
       it { expect { subject }.to output(universal_quantifier_sequent_figure_1).to_stdout }

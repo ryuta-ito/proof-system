@@ -106,6 +106,10 @@ class Sequent
       assumption.formulas.first.identify?(consequence.formulas.first)
   end
 
+  def duplicate?
+    assumption.uniq.size != assumption.size or consequence.uniq.size != consequence.size
+  end
+
   def identify?(sequent)
     assumption.identify?(sequent.assumption) && consequence.identify?(sequent.consequence)
   end
@@ -116,6 +120,7 @@ class Sequent
 
   def deductive_sequents
     return @deductive_sequents if Sequents === @deductive_sequents
+    return contraction if duplicate?
     return weakening if obvious?
     return deductive_sequents_alpha if both_sides.any? { |side| side.has_alpha? }
     return deductive_sequents_beta if both_sides.any? { |side| side.has_beta? }
@@ -148,6 +153,11 @@ class Sequent
     sequents = [self.class.new( assumption: sequents_a.assumption.add_formulas(sequents_b.assumption),
                                 consequence: sequents_a.consequence.add_formulas(sequents_b.consequence) )]
     Sequents.new sequents: sequents, rule: Rules::LK.build_by_sequents(sequents_a, sequents_b)
+  end
+
+  def contraction
+    contracted_sequent = Sequent.new(assumption: assumption.uniq, consequence: consequence.uniq)
+    Sequents.new sequents: [contracted_sequent], rule: Rules.new( name: 'C' )
   end
 
   def weakening

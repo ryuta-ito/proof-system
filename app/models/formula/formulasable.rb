@@ -14,6 +14,8 @@ module Formulasable
   def self.included(klass)
     klass.include ActiveModel::Model
     klass.extend ClassMethods
+    klass.extend Forwardable
+    klass.def_delegator :formulas, :size
   end
 
   def identify?(formulas_object)
@@ -67,6 +69,10 @@ module Formulasable
     formulas.empty? ? nil : formulas.first
   end
 
+  def uniq
+    _uniq formulas
+  end
+
   private
 
   def multi_set_diff(formulas_a, formulas_b)
@@ -77,6 +83,16 @@ module Formulasable
       multi_set_diff(formulas_a.drop(1), formulas_b.select.with_index { |_, i| i != index } )
     else
       [formulas_a.first] + multi_set_diff(formulas_a.drop(1), formulas_b)
+    end
+  end
+
+  def _uniq(formulas_a, formulas_b = [])
+    formula_head = formulas_a.first
+    if formula_head
+      _uniq (formulas_a.drop(1).reject { |formula| formula.identify?(formula_head) }),
+            (formulas_b + [formula_head])
+    else
+      self.class.new formulas: formulas_b
     end
   end
 end
