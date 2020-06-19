@@ -50,5 +50,10 @@ describe Sequent do
       let(:sequent) { Sequent.build('∀x.P(x) ∨ Q |- ∀y.(P(y) ∨ Q)') }
       it { expect { subject }.to output(universal_quantifier_sequent_figure_1).to_stdout }
     end
+
+    context 'universal quantifier example 2' do
+      let(:sequent) { Sequent.build('∀x.(P(x) => Q(x)) |- ∀x.(P(x) ∧ R(x) => Q(x) ∧ R(x))') }
+      it { expect { subject }.to output(universal_quantifier_sequent_figure_2).to_stdout }
+    end
   end
 end
