@@ -20,8 +20,8 @@ class Tableau
 
   class << self
     def build(tableau_data)
-      tableau_class = tableau_data =~ /\A\ *>/ ?  Tableau::Consequence : Tableau::Assumption
-      tableau_class.new( formula: Formula.build(tableau_data.sub /\A\ *>/, '') )
+      tableau_class = (tableau_data =~ /\A\ *>/) ? Tableau::Consequence : Tableau::Assumption
+      tableau_class.new( formula: Formula.build(tableau_data.sub(/\A\ *>/, '')) )
     end
 
     def build_by_file(file_path)
